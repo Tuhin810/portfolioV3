@@ -38,33 +38,20 @@ export const Prologue: React.FC<PrologueProps> = ({ onEnter }) => {
             exit={{ opacity: 0, filter: "blur(20px)", transition: { duration: 2 } }}
             className="flex flex-col items-center justify-center min-h-screen px-6 text-center bg-background"
         >
-            {/* Centered Mythic Logo */}
-            <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 0.7, y: 0 }}
-                transition={{ duration: 2 }}
-                className="relative w-48 h-48 md:w-72 md:h-72 mb-12 grayscale mix-blend-screen"
-            >
-                <Image
-                    src="/mythic-logo.png"
-                    alt="Mythic Logo"
-                    fill
-                    className="object-contain"
-                    priority
-                />
-            </motion.div>
+            {/* Stage I: CHAOS - Pure darkness and minimalist text */}
+            <div className="mb-32" />
 
             <motion.p
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 0.6 }}
-                transition={{ duration: 2, delay: 0.5 }}
-                className="font-serif text-xl md:text-2xl text-foreground/80 mb-12 max-w-2xl italic leading-relaxed"
+                animate={{ opacity: 0.4 }}
+                transition={{ duration: 3, delay: 0.5 }}
+                className="font-serif text-xl md:text-2xl text-foreground/60 mb-12 max-w-2xl italic leading-relaxed tracking-widest"
             >
-                &ldquo;The chronicles of the gods are not meant to be rushed.&rdquo;
+                &ldquo;Before structure, there was chaos.&rdquo;
             </motion.p>
 
-            {/* Cinematic Loading Bar */}
-            <div className="w-48 md:w-64 h-[1px] bg-white/5 relative overflow-hidden">
+            {/* Subtle Progress Bar */}
+            <div className="w-48 h-[1px] bg-white/5 relative overflow-hidden">
                 <motion.div
                     className="absolute top-0 left-0 h-full bg-gold-leaf"
                     style={{ width: `${progress}%` }}
@@ -74,11 +61,11 @@ export const Prologue: React.FC<PrologueProps> = ({ onEnter }) => {
 
             <motion.div
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 0.2 }}
+                animate={{ opacity: 0.1 }}
                 transition={{ delay: 1 }}
                 className="mt-6 font-serif"
             >
-                <span className="text-[9px] uppercase tracking-[0.6em] gold-text">Gathering Divine Whispers</span>
+                <span className="text-[9px] uppercase tracking-[1em] text-white">Observing the Void</span>
             </motion.div>
         </motion.div>
     );

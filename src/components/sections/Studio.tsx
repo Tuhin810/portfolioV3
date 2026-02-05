@@ -16,13 +16,13 @@ export const Studio: React.FC = () => {
                 className="w-full text-center mb-16"
             >
                 <div className="mb-4">
-                    <span className="font-serif text-[10px] tracking-[0.6em] uppercase text-gold-leaf opacity-60">Chapter II</span>
+                    <span className="font-serif text-[10px] tracking-[0.8em] uppercase text-gold-leaf opacity-60">Chapter IV</span>
                 </div>
                 <h2 className="narrative-serif text-3xl md:text-5xl text-foreground/80 italic mb-8">
-                    The Sacred Sanctum
+                    The Discipline
                 </h2>
                 <p className="font-serif text-[11px] tracking-[0.4em] uppercase text-foreground/30">
-                    &ldquo;Where the divine plans are etched in stone.&rdquo;
+                    &ldquo;Mastery is the silent work of a thousand trials.&rdquo;
                 </p>
             </motion.div>
 
@@ -46,7 +46,7 @@ export const Studio: React.FC = () => {
                             transition={{ delay: 1, duration: 1 }}
                             className="absolute bottom-8 left-8 z-20"
                         >
-                            <p className="text-[10px] uppercase tracking-[0.5em] text-foreground italic gold-text">I. The Eye of Aether</p>
+                            <p className="text-[10px] uppercase tracking-[0.5em] text-foreground italic gold-text">IV.I The Instruments of Aether</p>
                         </motion.div>
                     </div>
                 </motion.div>
@@ -70,7 +70,7 @@ export const Studio: React.FC = () => {
                             transition={{ delay: 1, duration: 1 }}
                             className="absolute bottom-8 left-8 z-20"
                         >
-                            <p className="text-[10px] uppercase tracking-[0.5em] text-foreground italic gold-text">II. The Codex of Chronos</p>
+                            <p className="text-[10px] uppercase tracking-[0.5em] text-foreground italic gold-text">IV.II The Codex of Chronos</p>
                         </motion.div>
                     </div>
                 </motion.div>

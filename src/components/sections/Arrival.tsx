@@ -40,12 +40,12 @@ export const Arrival: React.FC = () => {
             <motion.div
                 style={{ opacity }}
                 initial={{ opacity: 0, y: 10, x: "-50%" }}
-                animate={{ opacity: 0.3, y: 0, x: "-50%" }}
+                animate={{ opacity: 0.4, y: 0, x: "-50%" }}
                 transition={{ duration: 3, delay: 4 }}
                 className="absolute bottom-24 left-1/2 text-center z-20 whitespace-nowrap"
             >
-                <p className="font-serif text-[10px] tracking-[0.6em] uppercase  text-white/50">
-                    Architect of Olympus
+                <p className="font-serif text-[11px] tracking-[0.8em] uppercase italic text-white/40">
+                    Architect of Order
                 </p>
             </motion.div>
 

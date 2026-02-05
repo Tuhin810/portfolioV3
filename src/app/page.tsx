@@ -6,6 +6,11 @@ import { Prologue } from "@/components/sections/Prologue";
 import { Arrival } from "@/components/sections/Arrival";
 import { Studio } from "@/components/sections/Studio";
 
+import { About } from "@/components/sections/About";
+import { Trials } from "@/components/sections/Trials";
+import { Odyssey } from "@/components/sections/Odyssey";
+import { Offering } from "@/components/sections/Offering";
+
 export default function Home() {
   const [started, setStarted] = useState(false);
 
@@ -20,12 +25,27 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 4, delay: 0.5 }}
-            className="w-full"
+            className="w-full relative z-10 overflow-x-hidden"
           >
+            {/* Stage II: THE CALLING */}
             <Arrival />
+
+            {/* Stage III: THE FORGE */}
+            <Trials />
+
+            {/* Stage IV: THE DISCIPLINE */}
             <Studio />
 
-            {/* SPACER FOR SCROLLING NARRATIVE */}
+            {/* Stage V: THE ODYSSEY */}
+            <Odyssey />
+
+            {/* Stage VI: THE DOCTRINE */}
+            <About />
+
+            {/* Stage VII: THE OFFERING */}
+            <Offering />
+
+            {/* FINAL NARRATIVE SPACER */}
             <div className="h-[20vh]" />
           </motion.div>
         )}
