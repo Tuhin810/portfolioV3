@@ -10,6 +10,7 @@ import { About } from "@/components/sections/About";
 import { Trials } from "@/components/sections/Trials";
 import { Odyssey } from "@/components/sections/Odyssey";
 import { Offering } from "@/components/sections/Offering";
+import { Soundtrack } from "@/components/ui/Soundtrack";
 
 export default function Home() {
   const [started, setStarted] = useState(false);
@@ -44,6 +45,9 @@ export default function Home() {
 
             {/* Stage VII: THE OFFERING */}
             <Offering />
+
+            {/* SOUNDTRACK PLAYER */}
+            <Soundtrack />
 
             {/* FINAL NARRATIVE SPACER */}
             <div className="h-[20vh]" />
