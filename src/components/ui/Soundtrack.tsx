@@ -37,13 +37,13 @@ export const Soundtrack: React.FC = () => {
                             {/* <div className="absolute inset-0 bg-[conic-gradient(from_0deg,transparent_0deg,rgba(255,255,255,0.06)_45deg,transparent_90deg,rgba(255,255,255,0.06)_160deg,transparent_220deg,rgba(255,255,255,0.06)_300deg,transparent_360deg)] opacity-70 group-hover:opacity-90 transition-opacity" /> */}
 
                             {/* Subtle sheen layer */}
-                            <div className="absolute inset-0 bg-[conic-gradient(from_90deg,transparent_0deg,rgba(255,255,255,0.03)_120deg,transparent_240deg)] opacity-40" />
+                            {/* <div className="absolute inset-0 bg-[conic-gradient(from_90deg,transparent_0deg,rgba(255,255,255,0.03)_120deg,transparent_240deg)] opacity-40" /> */}
 
                             {/* Dense Micro-Grooves */}
                             {[...Array(30)].map((_, i) => (
                                 <div
                                     key={i}
-                                    className="absolute inset-0 rounded-full border border-white/20"
+                                    className="absolute inset-0 rounded-full border border-white/[0.08]"
                                     style={{ margin: `${i * 1.5}%` }}
                                 />
                             ))}
@@ -71,13 +71,13 @@ export const Soundtrack: React.FC = () => {
                         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.06] mix-blend-overlay" />
                         <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
 
-                        {/* Sleeve Labeling */}
-                        <div className="absolute top-10 left-10 space-y-4">
-                            <div className="w-10 h-px bg-gold-leaf/40" />
-                            <div className="space-y-1">
-                                <h4 className="text-[10px] tracking-[0.8em] uppercase font-serif italic gold-text font-medium">The Archive</h4>
-                                <p className="text-[6px] tracking-[0.4em] uppercase text-white/20">Soundtrack Series II • Fragment 03</p>
-                            </div>
+                        {/* Sleeve Labeling / Artwork */}
+                        <div className="absolute inset-0 p-4 flex flex-col items-center justify-center opacity-40">
+                            {/* <img
+                                src="/ob2.png"
+                                alt="Sleeve Art"
+                                className="w-full h-full object-cover rounded-md grayscale hover:grayscale-0 transition-all duration-1000"
+                            /> */}
                         </div>
 
                         {/* Status Light */}
