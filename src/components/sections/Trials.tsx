@@ -11,37 +11,40 @@ type ViewState = "default" | "work" | "experience" | "projects";
 const PORTALS = [
     {
         id: "I",
-        label: "Work",
-        title: "The Craft",
+        label: "The Forge",
+        title: "Work",
         view: "work" as ViewState,
         x: "15%",
-        y: "80%",
-        w: "w-[12vw]",
-        h: "aspect-[3/5]",
+        y: "85%",
+        w: "w-[16vw]",
+        max_w: "max-w-[210px]",
+        h: "aspect-[2/3]",
         origin: "15% 80%",
         Component: WorkView
     },
     {
         id: "II",
-        label: "Experience",
-        title: "The Odyssey",
+        label: "The Odyssey",
+        title: "Experience",
         view: "experience" as ViewState,
         x: "42%",
-        y: "80%",
-        w: "w-[18vw]",
-        h: "aspect-[3/5]",
+        y: "85%",
+        w: "w-[20vw]",
+        max_w: "max-w-[280px]",
+        h: "aspect-[2/3]",
         origin: "42% 80%",
         Component: ExperienceView
     },
     {
         id: "III",
-        label: "Projects",
-        title: "The Trials",
+        label: "The Trials",
+        title: "Projects",
         view: "projects" as ViewState,
         x: "75%",
-        y: "80%",
+        y: "85%",
         w: "w-[28vw]",
-        h: "aspect-[3/5]",
+        max_w: "max-w-[360px]",
+        h: "aspect-[2/3]",
         origin: "75% 80%",
         Component: ProjectsView
     },
@@ -55,7 +58,6 @@ export const Trials: React.FC = () => {
         if (view !== "default") return;
         setZoomingPortal(id);
 
-        // Orchestrate the camera move through the gate
         setTimeout(() => {
             setView(targetView);
             setZoomingPortal(null);
@@ -65,17 +67,17 @@ export const Trials: React.FC = () => {
     const activePortal = PORTALS.find(p => p.id === zoomingPortal);
 
     return (
-        <section className="relative bg-[#0d0c0b] text-[#d4cdbc] min-h-screen overflow-hidden border-t border-white/5 font-serif">
+        <section className="relative bg-[#0d0c0b] text-[#d4cdbc] min-h-screen overflow-hidden border-t border-white/5 font-serif select-none">
 
             <AnimatePresence mode="wait">
                 {view === "default" ? (
                     <motion.div
                         key="gateway-world"
-                        className="w-full min-h-screen grid grid-cols-1 lg:grid-cols-12"
+                        className="w-full h-screen grid grid-cols-1 lg:grid-cols-12 overflow-hidden"
                         animate={zoomingPortal ? {
                             scale: 18,
                             opacity: 0,
-                            filter: "blur(10px)"
+                            filter: "blur(5px)"
                         } : {
                             scale: 1,
                             opacity: 1,
@@ -86,90 +88,121 @@ export const Trials: React.FC = () => {
                             transformOrigin: activePortal?.origin || "50% 50%",
                         }}
                     >
-                        {/* LEFT: THE GATES OF ASCENSION (High-scale arches) */}
-                        <div className="lg:col-span-9 relative flex flex-col justify-between p-12 h-full border-r border-white/5">
-                            {/* Top Marker */}
-                            <div className="flex justify-between items-start uppercase text-[9px] tracking-[0.6em] opacity-30">
-                                <span>Threshold I - III</span>
-                                <span>Gateway of Creation</span>
+                        {/* LEFT: THE GATES OF OLYMPUS */}
+                        <div className="lg:col-span-9 relative flex flex-col justify-between p-8 md:p-14 h-full border-r border-white/5">
+                            {/* Header */}
+                            <div className="flex justify-between items-start uppercase text-[10px] tracking-[0.8em] opacity-30">
+                                <div className="flex items-center gap-3">
+                                    <span className="text-gold-leaf">✦</span>
+                                    <span>Sacred Thresholds</span>
+                                </div>
+                                <span className="italic tracking-[0.2em]">Fragment I - III</span>
                             </div>
 
-                            {/* The Gates */}
-                            <div className="flex items-end justify-between w-full h-[80vh] pt-12">
+                            {/* Arches Interaction Area */}
+                            <div className="flex-1 flex items-end justify-between w-full max-w-7xl mx-auto pb-12 pt-0 px-8 -mb-10">
                                 {PORTALS.map((portal) => (
                                     <div
                                         key={portal.id}
                                         onClick={() => handlePortalClick(portal.id, portal.view)}
-                                        className={`relative group cursor-pointer ${portal.w} ${portal.h} flex flex-col items-center justify-end`}
+                                        className={`relative group cursor-pointer ${portal.w} ${portal.max_w} ${portal.h} flex flex-col items-center justify-end`}
                                     >
-                                        {/* THE ARCH (Visual Gate) */}
-                                        <div className="absolute inset-0 rounded-t-full border border-white/20 group-hover:border-gold-leaf/40 transition-all duration-700 bg-black/40 overflow-hidden">
-                                            {/* Preview content visible inside the gate */}
-                                            <div className="absolute inset-0 opacity-10 group-hover:opacity-30 transition-opacity flex items-center justify-center scale-50">
-                                                <div className="w-[100vw] h-[100vh]">
+                                        {/* THE ARCH STRUCTURE */}
+                                        <div className="absolute inset-0 rounded-t-full border border-[#d4cdbc]/10 group-hover:border-gold-leaf/60 transition-all duration-1000 bg-[#0a0a0a] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.8)]">
+
+                                            {/* 1. LAYER: INTERNAL VIEW (Pre-rendered Room) */}
+                                            <div className="absolute inset-0 opacity-0 group-hover:opacity-50 transition-all duration-1000 scale-150 group-hover:scale-100 filter blur-md group-hover:blur-none">
+                                                <div className="w-[100vw] h-[100vh] origin-top">
                                                     <portal.Component onBack={() => { }} />
                                                 </div>
                                             </div>
-                                            <div className="absolute inset-0 bg-gradient-to-t from-[#0d0c0b] via-transparent to-transparent opacity-60" />
+
+                                            {/* 2. LAYER: THE BANNER COVER (Sketches) */}
+                                            <div className="absolute inset-0 transition-opacity duration-1000 group-hover:opacity-0 flex items-center justify-center">
+                                                <img
+                                                    src="/greek_myth_sketch_1_1770305784106.png"
+                                                    alt="Cover"
+                                                    className="w-full h-full object-cover opacity-20 grayscale saturate-0 group-hover:scale-110 transition-transform duration-[3s]"
+                                                />
+                                                {/* Threshold Banner Label */}
+                                                <div className="absolute bottom-16 flex flex-col items-center gap-3">
+                                                    <div className="w-px h-8 bg-gold-leaf/30" />
+                                                    <span className="text-[9px] tracking-[0.6em] uppercase text-gold-leaf/60">Threshold</span>
+                                                    <h4 className="text-3xl font-serif italic text-gold-leaf/40">{portal.id}</h4>
+                                                </div>
+                                            </div>
+
+                                            {/* Architectural Overlays */}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-[#0d0c0b] via-transparent to-transparent opacity-90" />
+                                            <div className="absolute inset-0 border-[0.5px] border-white/5 rounded-t-full pointer-events-none" />
                                         </div>
 
-                                        {/* Gate ID & Label */}
-                                        <div className="relative z-10 text-center pb-8 flex flex-col items-center gap-4 transition-transform duration-700 group-hover:-translate-y-4">
-                                            <span className="text-[10px] tracking-[0.8em] uppercase opacity-40 group-hover:text-gold-leaf group-hover:opacity-100 transition-all">
-                                                {portal.label}
-                                            </span>
-                                            <div className="w-px h-12 bg-white/10 group-hover:h-20 group-hover:bg-gold-leaf/40 transition-all duration-700" />
-                                            <span className="text-xl md:text-2xl italic opacity-10 group-hover:opacity-60 transition-opacity">
-                                                {portal.id}
-                                            </span>
+                                        {/* HOVER LABELS */}
+                                        <div className="relative z-10 text-center pb-8 flex flex-col items-center gap-6 transition-all duration-1000 group-hover:-translate-y-6">
+                                            <div className="flex flex-col items-center gap-3">
+                                                <span className="text-[10px] tracking-[0.8em] uppercase text-gold-leaf/40 opacity-0 group-hover:opacity-100 group-hover:text-gold-leaf transition-all duration-700">
+                                                    {portal.label}
+                                                </span>
+                                                <span className="text-lg md:text-2xl font-medium tracking-tight opacity-0 group-hover:opacity-100 transition-all duration-1000 delay-100">
+                                                    {portal.title}
+                                                </span>
+                                            </div>
+
+                                            <div className="w-px h-16 bg-gradient-to-down from-gold-leaf/40 to-transparent group-hover:h-24 transition-all duration-1000 opacity-20" />
                                         </div>
+
+                                        {/* Flourish */}
+                                        <div className="absolute -bottom-2 -left-2 text-[10px] text-gold-leaf/10 group-hover:text-gold-leaf group-hover:rotate-45 transition-all duration-700">✦</div>
                                     </div>
                                 ))}
                             </div>
 
                             {/* Bottom Marker */}
-                            <div className="flex justify-between items-end text-[8px] tracking-[1em] uppercase opacity-20">
-                                <span>The Descent Begins</span>
-                                <div className="w-6 h-6 rounded-full border border-white/20 flex items-center justify-center">✦</div>
+                            <div className="flex justify-between items-end text-[10px] tracking-[0.8em] uppercase opacity-30 mt-8">
+                                <div className="flex items-center gap-6">
+                                    <div className="w-16 h-px bg-white/10" />
+                                    <span>Fragment {zoomingPortal || "0"}</span>
+                                </div>
+                                <div className="flex items-center gap-6">
+                                    <span>Archiving Order</span>
+                                    <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-[10px]">
+                                        0{zoomingPortal ? (zoomingPortal === "I" ? 1 : zoomingPortal === "II" ? 2 : 3) : 0}
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        {/* RIGHT: THE EDITORIAL SIDEBAR (Matching reference image) */}
-                        <div className="lg:col-span-3 h-full bg-[#0a0a0a] border-l border-white/10 p-10 flex flex-col justify-between relative">
-                            <div className="space-y-12">
-                                <div className="space-y-4">
-                                    <div className="w-8 h-[1px] bg-gold-leaf/60" />
-                                    <h2 className="text-2xl md:text-3xl font-serif italic gold-text tracking-tight uppercase leading-none">
+                        {/* RIGHT: THE CHRONICLES (Editorial Sidebar) */}
+                        <div className="lg:col-span-3 h-full bg-[#0a0a0a] border-l border-white/5 p-12 flex flex-col justify-between relative">
+                            <div className="space-y-16">
+                                <div className="space-y-6">
+                                    <div className="w-12 h-[px] bg-gold-leaf/40" />
+                                    <h2 className="text-4xl font-serif  gold-text tracking- uppercase leading-[0.85]">
                                         The <br /> Chronicles
                                     </h2>
+                                    <p className="text-[10px] tracking-[0.4em] uppercase text-white/30 italic">Records of the Architect</p>
                                 </div>
 
-                                {/* Justified Editorial Text */}
-                                <div className="space-y-8">
-                                    <p className="text-[11px] leading-relaxed text-justify text-[#d4cdbc]/50 font-light opacity-80 hyphens-auto uppercase tracking-wider">
+                                <div className="space-y-12">
+                                    <p className="text-[11px] leading-[2] text-justify text-[#d4cdbc]/50 font-light hyphens-auto uppercase tracking-widest">
                                         In the architecture of our world, we found structure resisting its own weight.
                                         The systems of old were bound by legacy gravity, collapsing into noise.
-                                        We forged order through a stateless, divine architecture,
-                                        balancing the structural with the ethereal. Every pixel was a trial,
-                                        every line of code a vow to clarity.
+                                        We forged order through a stateless, divine architecture.
                                     </p>
-                                    <p className="text-[11px] leading-relaxed text-justify text-[#d4cdbc]/50 font-light opacity-80 hyphens-auto uppercase tracking-wider">
+                                    <p className="text-[11px] leading-[2] text-justify text-[#d4cdbc]/50 font-light hyphens-auto uppercase tracking-widest">
                                         The craftsman does not merely build; he listens to the silence between the stones.
-                                        Here, in the heart of the forge, we learned that silence is the highest form of order.
-                                        The work survives not because it is loud, but because it is true.
+                                        Every pixel was a trial, every line a vow. order is the highest form of silence.
                                     </p>
                                 </div>
                             </div>
 
-                            {/* Decorative marker at bottom like reference */}
-                            <div className="mt-auto flex justify-end">
-                                <div className="w-12 h-12 rounded-full border border-gold-leaf/10 flex items-center justify-center text-[10px] opacity-20">
-                                    03
-                                </div>
+                            <div className="mt-auto flex items-center justify-between border-t border-white/5 pt-8">
+                                <span className="text-[9px] tracking-[1em] uppercase opacity-20">Volume III</span>
+                                <div className="w-2 h-2 rounded-full bg-gold-leaf/20 animate-pulse" />
                             </div>
 
-                            {/* Grainy Texture Overlay */}
-                            <div className="absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+                            {/* Grainy Texture */}
+                            <div className="absolute inset-0 pointer-events-none opacity-[0.06] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
                         </div>
                     </motion.div>
                 ) : (
@@ -177,10 +210,10 @@ export const Trials: React.FC = () => {
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={view}
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 1.05 }}
-                                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                                initial={{ opacity: 0, scale: 0.9, filter: "blur(40px)" }}
+                                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                                exit={{ opacity: 0, scale: 1.1, filter: "blur(40px)" }}
+                                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                                 className="w-full h-full"
                             >
                                 {view === "work" && <WorkView onBack={() => setView("default")} />}

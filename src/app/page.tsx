@@ -34,7 +34,7 @@ export default function Home() {
             <Trials />
 
             {/* Stage IV: THE DISCIPLINE */}
-            <Studio />
+            {/* <Studio /> */}
 
             {/* Stage V: THE ODYSSEY */}
             <Odyssey />
