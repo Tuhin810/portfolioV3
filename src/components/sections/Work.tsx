@@ -26,7 +26,7 @@ export default function Work() {
         >
             <div className="sticky top-0 left-0 h-screen w-full flex items-center justify-center z-10">
 
-                <WorkBackground rotateSlow={rotateSlow} rotateFast={rotateFast} />
+                <WorkBackground rotateSlow={rotateSlow} rotateFast={rotateFast} progress={scrollYProgress} />
 
                 <div className="relative w-full h-full flex items-center overflow-hidden">
                     <div className="h-full border-r border-white/5 bg-black/50 backdrop-blur-sm z-20 xl:block hidden">
