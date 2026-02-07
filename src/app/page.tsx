@@ -26,7 +26,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 4, delay: 0.5 }}
-            className="w-full relative z-10 overflow-x-hidden"
+            className="w-full relative z-10"
           >
             {/* Stage II: THE CALLING */}
             <Arrival />

@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+import { EditorialSidebar } from "@/components/shared/EditorialSidebar";
 
 const WORKS = [
     {
@@ -42,278 +43,159 @@ const WORKS = [
     }
 ];
 
-const FibonacciCorner = ({ className, rotation = 0 }: { className: string, rotation?: number }) => (
-    <div className={`absolute w-16 h-16 md:w-24 md:h-24 pointer-events-none z-0 ${className}`} style={{ transform: `rotate(${rotation}deg)` }}>
-        <svg
-            width="80"
-            height="80"
-            viewBox="0 0 80 80"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            {/* <!-- Outer corner --> */}
-            <path
-                d="M0 80 V20 C0 9 9 0 20 0 H80"
-                stroke="white"
-                stroke-width="1"
-            />
+const WorkItem = ({ work, index, progress }: { work: typeof WORKS[0], index: number, progress: MotionValue<number> }) => {
+    const itemCount = WORKS.length;
+    const start = index / itemCount;
+    const end = (index + 1) / itemCount;
 
-            {/* <!-- Inner square marker --> */}
-            <rect
-                x="18"
-                y="18"
-                width="10"
-                height="10"
-                fill="none"
-                stroke="white"
-                stroke-width="1"
-            />
-        </svg>
-    </div>
-);
+    const opacity = useTransform(
+        progress,
+        [start, start + 0.1, end - 0.1, end],
+        [0, 1, 1, 0]
+    );
 
+    const y = useTransform(
+        progress,
+        [start, start + 0.1, end - 0.1, end],
+        [30, 0, 0, -30]
+    );
 
-const WorkSidebar = () => (
-    <div className="hidden xl:flex flex-col w-[300px] border-r border-t border-b border-white/10 bg-black/40 backdrop-blur-sm self-stretch
-      overflow-hidden   h-screen">
-        <div className="grid grid-cols-[1fr_2.5fr] h-full">
-            {/* <div className="absolute top-[55%] -right-16 translate-x-1 -rotate-90">
-                <div className="px-10 py-2 border border-white/10 rounded-full bg-black/80 shadow-[0_0_30px_rgba(0,0,0,0.5)] backdrop-blur-xl">
-                    <span className="text-[11px] tracking-[0.6em] uppercase text-[#d4d4d4] font-medium">Moscow</span>
-                </div>
-            </div> */}
-            {/* Left Column */}
-            <div className="flex flex-col border-r border-white/10 h-full">
-                <div className="p-4 border-b border-white/10 h-32 flex flex-col justify-end">
-                    <p className="text-[10px] text-white/20 uppercase leading-tight tracking-[0.2em] font-sans">
-                        System.<br />
-                        Archive.<br />
-                        Vol.03
-                    </p>
-                </div>
-
-                <div className="flex-1 border-b border-white/10 relative group overflow-hidden bg-black/40 min-h-[300px]">
-                    <div className="absolute inset-0 opacity-20 grayscale transition-all duration-1000 group-hover:opacity-40 group-hover:scale-110">
-                        <img
-                            src="/gate1.png"
-                            alt="Sidebar Decoration"
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-                </div>
-
-                <div className="p-4 h-32 flex flex-col justify-start">
-                    <p className="text-[10px] text-white/20 uppercase leading-tight tracking-[0.2em] font-sans">
-                        Temporal.<br />
-                        Entity.<br />
-                        Fragment
-                    </p>
-                </div>
-            </div>
-
-            {/* Right Column */}
-            <div className="flex flex-col relative h-full">
-                {/* Vertical Text Area */}
-                <div className="flex-1 flex items-center justify-center py-12">
-                    <h2 className="text-[120px] font- text-[#ece4d9]/50 uppercase tracking-tighter [writing-mode:vertical-rl] rotate-180 select-none">
-                        WORK
-                    </h2>
-                </div>
-
-                {/* Moscow Pill - Positioned relative to the right edge */}
-
-
-                {/* Moon Square at bottom */}
-                <div className="h-48 border-t border-white/10 flex items-center justify-center bg-black/10 p-4">
-                    <div className="relative w-28 h-28 group">
-                        <motion.div
-                            initial={{ rotate: -15 }}
-                            animate={{ rotate: 15 }}
-                            transition={{ duration: 4, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
-                            className="w-full h-full rounded-full border border-white/5 flex items-center justify-center p-2"
-                        >
-                            <div className="w-full h-full rounded-full bg-black overflow-hidden relative border border-white/10">
-                                {/* First Quarter Moon Effect */}
-                                <div className="absolute inset-0 left-1/2 bg-[#d4d4d4]" />
-                            </div>
-                        </motion.div>
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {/* Aesthetic vertical edge line */}
-        <div className="absolute top-0 right-2 w-[1px] h-full bg-white/5" />
-    </div>
-);
-
-
-export default function Work() {
-
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [activeIndex, setActiveIndex] = useState(0);
-
-    const handleScroll = () => {
-        if (!containerRef.current) return;
-        const scrollLeft = containerRef.current.scrollLeft;
-        const width = containerRef.current.offsetWidth;
-        const index = Math.round(scrollLeft / width);
-        if (index !== activeIndex && index >= 0 && index < WORKS.length) {
-            setActiveIndex(index);
-        }
-    };
-
-    const activeTheme = WORKS[activeIndex].themeColor;
+    const scale = useTransform(
+        progress,
+        [start, start + 0.1, end - 0.1, end],
+        [0.95, 1, 1, 1.05]
+    );
 
     return (
-        <section className="bg-[#0d0c0b] text-[#d4cdbc] min-h-screen overflow-hidden border-t border-white/5 font-serif select-none">
-            <div className="relative z-10 w-full flex items-center gap-12">
-                {/* DECORATIVE SIDEBAR COMPONENT */}
-                <WorkSidebar />
+        <motion.div
+            style={{
+                opacity,
+                y,
+                pointerEvents: useTransform(opacity, (v) => v > 0.5 ? "auto" : "none"),
+                visibility: useTransform(opacity, (v) => v > 0 ? "visible" : "hidden")
+            }}
+            className="absolute inset-0 w-full h-full flex flex-col lg:flex-row items-center justify-center px-8 md:px-20 gap-12 lg:gap-24"
+        >
+            <div className="relative w-full lg:w-[40%] aspect-[4/5] max-w-[340px] group shrink-0">
+                <motion.div
+                    style={{ scale, borderColor: `${work.themeColor}33` }}
+                    className="absolute inset-0 border-[0.5px] p-3 rounded-t-full transition-colors duration-1000 shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+                >
+                    <div className="w-full h-full bg-[#111] rounded-t-full relative overflow-hidden flex items-center justify-center p-6 border border-white/5">
+                        <div className="absolute inset-0 opacity-10 mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
 
-                <div className="flex-1 w-full overflow-hidden">
-                    <div className="relative w-full">
-
-
-                        {/* HORIZONTAL EXHIBIT CONTAINER */}
-                        <div
-                            ref={containerRef}
-                            onScroll={handleScroll}
-                            className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-20"
-                            style={{ scrollBehavior: 'smooth' }}
-                        >
-                            {WORKS.map((work, index) => (
-                                <div
-                                    key={work.id}
-                                    className="min-w-full snap-start flex flex-col lg:flex-row items-center px-6 md:px-12 gap-16 lg:gap-32"
-                                >
-                                    {/* CLASSICAL ARCHED CONTAINER */}
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 30 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                                        className="relative w-full lg:w-[40%] aspect-[4/5] max-w-md group"
-                                    >
-                                        <motion.div
-                                            className="absolute inset-0 border p-4 rounded-t-full transition-colors duration-1000"
-                                            animate={{ borderColor: activeIndex === index ? `${work.themeColor}44` : 'rgba(255,255,255,0.1)' }}
-                                        >
-                                            <div className="w-full h-full bg-marble-gray/30 rounded-t-full relative overflow-hidden flex items-center justify-center p-8">
-                                                <div className="absolute inset-0 bg-marble-gray/20 mix-blend-overlay opacity-30 bg-[url('https://www.transparenttextures.com/patterns/granite.png')]" />
-
-                                                <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-t-[500px]">
-                                                    <motion.span
-                                                        className="text-[8vw] font-serif uppercase select-none tracking-tighter group-hover:scale-110 transition-transform duration-1000"
-                                                        animate={{ color: activeIndex === index ? `${work.themeColor}22` : 'rgba(255,255,255,0.03)' }}
-                                                    >
-                                                        {work.god}
-                                                    </motion.span>
-                                                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60" />
-                                                </div>
-                                            </div>
-                                        </motion.div>
-
-                                        <motion.div
-                                            className="absolute -top-2 -left-2 w-4 h-4 border-t-2 border-l-2"
-                                            animate={{ borderColor: activeIndex === index ? work.themeColor : 'rgba(255,255,255,0.2)' }}
-                                        />
-                                        <motion.div
-                                            className="absolute -top-2 -right-2 w-4 h-4 border-t-2 border-r-2"
-                                            animate={{ borderColor: activeIndex === index ? work.themeColor : 'rgba(255,255,255,0.2)' }}
-                                        />
-                                    </motion.div>
-
-                                    {/* TEXT CONTENT */}
-                                    <div className="w-full lg:w-[50%] max-w-xl space-y-10">
-                                        <motion.div
-                                            initial={{ opacity: 0, x: 40 }}
-                                            whileInView={{ opacity: 1, x: 0 }}
-                                            transition={{ duration: 0.8, delay: 0.1 }}
-                                        >
-
-                                            <h3 className="text-5xl  lg:text-6xl font- tracking-tighter uppercase leading-[0.85] mb-6">
-                                                {work.title}
-                                            </h3>
-                                        </motion.div>
-
-                                        <motion.p
-                                            initial={{ opacity: 0, x: 40 }}
-                                            whileInView={{ opacity: 0.5, x: 0 }}
-                                            transition={{ duration: 0.8, delay: 0.2 }}
-                                            className="text-lg md:text-xl font-sans font-light leading-relaxed tracking-wide max-w-lg"
-                                        >
-                                            {work.description}
-                                        </motion.p>
-
-
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 20 }}
-                                            whileInView={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.8, delay: 0.4 }}
-                                        >
-                                            <motion.button
-                                                className="px-10 py-4 bg-white/[0.02] border border-white/10 transition-all duration-700 uppercase text-[10px] tracking-[0.6em] font-medium"
-                                                animate={{
-                                                    color: activeIndex === index ? work.themeColor : '#a68b5c',
-                                                    borderColor: activeIndex === index ? `${work.themeColor}55` : 'rgba(255,255,255,0.1)'
-                                                }}
-                                                whileHover={{ backgroundColor: `${work.themeColor}11`, borderColor: work.themeColor }}
-                                            >
-                                                Inspect Artifact
-                                            </motion.button>
-                                        </motion.div>
-                                    </div>
-                                </div>
-                            ))}
+                        <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-t-[500px]">
+                            <motion.span
+                                className="text-[120px] font-serif uppercase select-none tracking-tighter opacity-20 pointer-events-none"
+                                style={{ color: work.themeColor }}
+                            >
+                                {work.god[0]}
+                            </motion.span>
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
                         </div>
 
-                        {/* SECTION NAVIGATION */}
-                        <div className="px-6 md:px-12 flex justify-between items-center border-t border-white/5 pt-12">
-                            <div className="flex gap-4">
-                                {WORKS.map((work, i) => (
-                                    <button
-                                        key={i}
-                                        onClick={() => {
-                                            containerRef.current?.scrollTo({ left: i * containerRef.current.offsetWidth, behavior: 'smooth' });
-                                        }}
-                                        className="h-[2px] transition-all duration-700"
-                                        style={{
-                                            width: activeIndex === i ? '80px' : '32px',
-                                            backgroundColor: activeIndex === i ? work.themeColor : 'rgba(255,255,255,0.1)'
-                                        }}
-                                    />
-                                ))}
-                            </div>
-
-                            <div className="flex items-center gap-6 opacity-30 h-full">
-                                <span className="text-[9px] uppercase tracking-[0.5em] italic">Odyssey {activeIndex + 1} / {WORKS.length}</span>
-                                <div className="w-px h-8 bg-white/20" />
-                                <span className="text-[9px] uppercase tracking-[0.3em] hidden sm:block">Scroll to Traverse</span>
-                            </div>
+                        <div className="absolute bottom-10 flex flex-col items-center">
+                            <span className="text-[8px] tracking-[0.6em] uppercase text-white/20 mb-2">Mythos</span>
+                            <span className="text-xl font-serif italic text-white/40 tracking-widest">{work.god}</span>
                         </div>
                     </div>
-                </div>
+                </motion.div>
+
+                <div className="absolute -top-1 -left-1 w-3 h-3 border-t border-l opacity-40" style={{ borderColor: work.themeColor }} />
+                <div className="absolute -top-1 -right-1 w-3 h-3 border-t border-r opacity-40" style={{ borderColor: work.themeColor }} />
             </div>
 
-            <style jsx>{`
-                .hide-scrollbar::-webkit-scrollbar {
-                    display: none;
-                }
-                .hide-scrollbar {
-                    -ms-overflow-style: none;
-                    scrollbar-width: none;
-                }
-                @keyframes greek-slide {
-                    from { transform: translateX(0); }
-                    to { transform: translateX(-100px); }
-                }
-                .animate-greek-slide {
-                    animation: greek-slide 20s linear infinite;
-                }
-            `}</style>
+            <div className="w-full lg:w-[50%] max-w-lg flex flex-col items-start text-left">
+                <div className="mb-4 flex items-center gap-4">
+                    <span className="text-[10px] tracking-[0.4em] uppercase opacity-30">Artifact {work.id}</span>
+                    <div className="w-8 h-px bg-white/10" />
+                </div>
+
+                <h3 className="text-5xl lg:text-7xl font-serif tracking-tighter uppercase leading-[0.9] mb-8">
+                    {work.title}
+                </h3>
+
+                <p className="text-base lg:text-lg font-sans font-light leading-relaxed tracking-wide opacity-50 mb-12 max-w-md">
+                    {work.description}
+                </p>
+
+                <motion.button
+                    className="group relative px-10 py-4 bg-transparent border border-white/10 overflow-hidden"
+                    whileHover={{ scale: 1.02 }}
+                >
+                    <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500" />
+                    <span className="relative z-10 text-[9px] tracking-[0.5em] uppercase font-medium" style={{ color: work.themeColor }}>
+                        Examine Artifact
+                    </span>
+                    <div className="absolute bottom-0 left-0 w-full h-[1px] scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" style={{ backgroundColor: work.themeColor }} />
+                </motion.button>
+            </div>
+        </motion.div>
+    );
+};
+
+const NavIndicator = ({ i, work, progress }: { i: number, work: typeof WORKS[0], progress: MotionValue<number> }) => {
+    const start = i / WORKS.length;
+    const end = (i + 1) / WORKS.length;
+
+    const width = useTransform(progress, [start, start + 0.1, end - 0.1, end], ["12px", "40px", "40px", "12px"]);
+    const backgroundColor = useTransform(progress, [start, start + 0.1, end - 0.1, end], ["rgba(255,255,255,0.1)", work.themeColor, work.themeColor, "rgba(255,255,255,0.1)"]);
+
+    return (
+        <motion.div
+            style={{ width, backgroundColor }}
+            className="h-[1px] rounded-full transition-all duration-300"
+        />
+    );
+};
+
+export default function Work() {
+    const sectionRef = useRef<HTMLDivElement>(null);
+
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start start", "end end"]
+    });
+
+    return (
+        <section
+            ref={sectionRef}
+            className="relative h-[600vh] w-full bg-black text-[#d4cdbc] overflow-visible border-y border-white/5"
+        >
+            <div className="sticky top-0 left-0 h-screen w-full flex items-center justify-center z-10">
+                <div className="relative w-full h-full flex items-center overflow-hidden">
+                    <div className="h-full border-r border-white/5 bg-black/50 backdrop-blur-sm z-20 xl:block hidden">
+                        <EditorialSidebar
+                            title="WORK"
+                            mainImage="/gate1.png"
+                            showMoon={true}
+                            rotation={180}
+                            layout="info-first"
+                            className="border-none"
+                        />
+                    </div>
+
+                    <div className="flex-1 h-full relative">
+                        {WORKS.map((work, index) => (
+                            <WorkItem
+                                key={work.id}
+                                work={work}
+                                index={index}
+                                progress={scrollYProgress}
+                            />
+                        ))}
+                    </div>
+                </div>
+
+                <div className="absolute bottom-12 right-12 flex items-center gap-12 z-30 opacity-40">
+                    <div className="flex items-center gap-2">
+                        {WORKS.map((work, i) => (
+                            <NavIndicator key={i} i={i} work={work} progress={scrollYProgress} />
+                        ))}
+                    </div>
+                    <span className="text-[8px] tracking-[0.4em] uppercase italic">Trajectory</span>
+                </div>
+            </div>
         </section>
     );
 }
