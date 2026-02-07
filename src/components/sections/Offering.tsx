@@ -5,6 +5,7 @@ import {
     Send,
     Globe,
     X,
+    Sparkles,
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
@@ -100,13 +101,14 @@ export const Offering: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.96, y: 10 }}
                         transition={{ type: "spring", damping: 28, stiffness: 180 }}
-                        className="relative w-full max-w-4xl max-h-[85vh] bg-black border border-[#cda56e]/20 shadow-[0_0_120px_rgba(205,165,110,0.12)]"
+                        className="relative w-full max-w-5xl max-h-[90vh] bg-[#0c0c0c] border border-[#cda56e]/20 shadow-[0_0_120px_rgba(205,165,110,0.12)] overflow-hidden"
                     >
                         {/* AMBIENCE */}
                         <AmbientParticles />
 
-                        {/* FRAME */}
-                        <div className="absolute inset-4 md:inset-6 border border-[#cda56e]/10 pointer-events-none z-20" />
+                        {/* FRAME LINES */}
+                        <div className="absolute top-12 bottom-12 left-0 right-0 border-t border-b border-[#cda56e]/10 pointer-events-none z-20" />
+                        <div className="absolute left-10 right-10 top-0 bottom-0 border-l border-r border-[#cda56e]/10 pointer-events-none z-20" />
 
                         {/* CLOSE */}
                         <motion.button
@@ -118,93 +120,135 @@ export const Offering: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
                             <X size={18} />
                         </motion.button>
 
-                        {/* CONTENT */}
-                        <div className="relative z-10 px-8 py-10 md:px-12 md:py-12">
-                            <div className="grid md:grid-cols-2 gap-8 items-center">
+                        {/* CONTENT: BOOK COVER LAYOUT */}
+                        <div className="relative z-10 flex flex-col h-full select-none">
 
-                                {/* LEFT — FORM */}
-                                <div className="space-y-8">
-                                    <div>
-                                        <h2 className="text-3xl md:text-4xl font-serif text-white leading-tight">
-                                            Initiate <br />
-                                            <span className="text-[#cda56e]">Communion.</span>
-                                        </h2>
-                                        <p className="mt-4 max-w-xs font-serif italic text-white/40 text-sm">
-                                            Across the digital aether, your message becomes a relic.
+                            {/* TOP BANNER */}
+                            <div className="h-12 flex items-center justify-between px-6 border-b border-[#cda56e]/10">
+                                <div className="flex gap-2">
+                                    <div className="w-1.5 h-1.5 rounded-full border border-[#cda56e]/40" />
+                                    <Sparkles size={8} className="text-[#cda56e]/40" />
+                                </div>
+                                <h1 className="font-serif text-lg tracking-[0.4em] text-[#cda56e] uppercase">Offeren</h1>
+                                <div className="flex gap-2">
+                                    <div className="w-3 h-3 rounded-full border border-[#cda56e]/20" />
+                                    <div className="w-3 h-3 rounded-full border border-[#cda56e]/20 -ml-1.5" />
+                                </div>
+                            </div>
+
+                            <div className="flex flex-1 min-h-0">
+                                {/* LEFT MARGIN: VERTICAL TEXT */}
+                                <div className="w-10 border-r border-[#cda56e]/10 flex items-center justify-center">
+                                    <span className="[writing-mode:vertical-rl] rotate-180 font-serif text-[10px] tracking-[0.5em] text-[#cda56e]/30 uppercase">The Archive of Whispers</span>
+                                </div>
+
+                                {/* MAIN BODY CONTAINER */}
+                                <div className="flex-1 relative overflow-y-auto custom-scrollbar p-6 md:p-10">
+
+                                    {/* OVAL QUOTE BUBBLE */}
+                                    <div className="absolute top-4 left-4 w-40 p-3 rounded-[100%] border border-[#cda56e]/20 text-center">
+                                        <p className="font-serif text-[8px] italic leading-tight text-white/40">
+                                            "And perhaps it is the greater grief, after all, to be left on earth when another is gone."
                                         </p>
                                     </div>
 
-                                    <form className="space-y-6">
-                                        <div>
-                                            <label className="text-[9px] tracking-[0.4em] uppercase text-[#cda56e]/40 font-bold">
-                                                The Oracle (Email)
-                                            </label>
-                                            <input
-                                                type="email"
-                                                placeholder="your@email.com"
-                                                className="w-full bg-transparent border-b border-[#cda56e]/20 py-2 font-serif text-base text-white placeholder:text-white/10 focus:outline-none focus:border-[#cda56e] transition-all duration-700"
-                                            />
+                                    <div className="grid md:grid-cols-2 gap-12 items-center mt-12">
+                                        {/* FORM SIDE */}
+                                        <div className="space-y-8">
+                                            <div>
+                                                <h2 className="text-4xl md:text-5xl font-serif text-white leading-none">
+                                                    Initiate <br />
+                                                    <span className="text-[#cda56e]">Communion.</span>
+                                                </h2>
+                                            </div>
+
+                                            <form className="space-y-6">
+                                                <div>
+                                                    <label className="text-[9px] tracking-[0.4em] uppercase text-[#cda56e]/40 font-bold">The Oracle (Email)</label>
+                                                    <input
+                                                        type="email"
+                                                        placeholder="Enter your electronic essence..."
+                                                        className="w-full bg-transparent border-b border-[#cda56e]/20 py-2 font-serif text-base text-white placeholder:text-white/10 focus:outline-none focus:border-[#cda56e] transition-all duration-700"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="text-[9px] tracking-[0.4em] uppercase text-[#cda56e]/40 font-bold">The Prophecy (Message)</label>
+                                                    <textarea
+                                                        rows={1}
+                                                        placeholder="Speak your truth..."
+                                                        className="w-full bg-transparent border-b border-[#cda56e]/20 py-2 font-serif text-base text-white placeholder:text-white/10 focus:outline-none focus:border-[#cda56e] transition-all duration-700 resize-none"
+                                                    />
+                                                </div>
+                                                <motion.button
+                                                    whileHover={{ scale: 1.03 }}
+                                                    whileTap={{ scale: 0.97 }}
+                                                    className="relative overflow-hidden w-full flex items-center justify-center gap-4 py-4 bg-[#cda56e] text-black font-serif tracking-[0.3em] uppercase text-xs font-bold"
+                                                >
+                                                    <span>Ignite Connection</span>
+                                                    <Send size={14} />
+                                                </motion.button>
+                                            </form>
                                         </div>
 
-                                        <div>
-                                            <label className="text-[9px] tracking-[0.4em] uppercase text-[#cda56e]/40 font-bold">
-                                                The Prophecy (Message)
-                                            </label>
-                                            <textarea
-                                                rows={1}
-                                                placeholder="Speak your truth..."
-                                                className="w-full bg-transparent border-b border-[#cda56e]/20 py-2 font-serif text-base text-white placeholder:text-white/10 focus:outline-none focus:border-[#cda56e] transition-all duration-700 resize-none"
-                                            />
+                                        {/* RELIC SIDE WITH STARBURST */}
+                                        <div className="relative flex justify-center pt-8">
+                                            {/* LARGE DECORATIVE STARBURST (TOP RIGHT) */}
+                                            <div className="absolute -top-4 -right-4 w-28 h-28 pointer-events-none z-20">
+                                                <svg viewBox="0 0 100 100" className="w-full h-full text-[#cda56e]/30 fill-none stroke-current stroke-[0.5]">
+                                                    {Array.from({ length: 16 }).map((_, i) => (
+                                                        <line key={i} x1="50" y1="50" x2={50 + 45 * Math.cos((i * Math.PI) / 8)} y2={50 + 45 * Math.sin((i * Math.PI) / 8)} />
+                                                    ))}
+                                                </svg>
+                                            </div>
+
+                                            {/* THE OVAL FRAME (CLASSICAL ARCH) */}
+                                            <motion.div
+                                                initial={{ opacity: 0, scale: 0.9 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                className="relative w-[280px] aspect-[4/5] rounded-t-full border border-[#cda56e]/20 overflow-hidden bg-[#111]"
+                                            >
+                                                <Image
+                                                    src="/hermes.png"
+                                                    alt="Hermes"
+                                                    fill
+                                                    className="object-cover sepia-[0.3] brightness-75 hover:brightness-100 transition-all duration-[3s]"
+                                                />
+
+                                                {/* SCANLINE */}
+                                                <motion.div
+                                                    animate={{ y: ["-100%", "300%"] }}
+                                                    transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                                                    className="absolute inset-x-0 h-px bg-[#cda56e]/40 shadow-[0_0_12px_#cda56e]"
+                                                />
+                                            </motion.div>
+
+                                            {/* BOTTOM BUBBLE DECOR */}
+                                            <div className="absolute -bottom-6 right-0 flex gap-2">
+                                                <Sparkles size={12} className="text-[#cda56e]/20" />
+                                                <div className="w-4 h-4 rounded-full border border-[#cda56e]/10 flex items-center justify-center">
+                                                    <div className="w-1 h-1 rounded-full bg-[#cda56e]/40" />
+                                                </div>
+                                            </div>
                                         </div>
+                                    </div>
 
-                                        <motion.button
-                                            whileHover={{ scale: 1.03 }}
-                                            whileTap={{ scale: 0.97 }}
-                                            className="relative overflow-hidden flex items-center justify-center gap-4 px-10 py-4 bg-[#cda56e] text-black font-serif tracking-[0.3em] uppercase text-xs font-bold"
-                                        >
-                                            <span>Ignite Connection</span>
-                                            <Send size={18} />
-                                            <motion.span
-                                                className="absolute inset-0 bg-white/30"
-                                                initial={{ y: "100%" }}
-                                                whileHover={{ y: 0 }}
-                                                transition={{ duration: 0.5 }}
-                                            />
-                                        </motion.button>
-                                    </form>
+                                    {/* LOWER QUOTE TEXT */}
+                                    <div className="mt-16 text-center max-w-lg mx-auto">
+                                        <p className="font-serif text-[9px] tracking-[0.1em] leading-relaxed text-[#cda56e]/40 uppercase">
+                                            "I could recognize him by touch alone, by smell; I would know him blind, by the way his breaths came and his feet struck the earth. I would know him in death, at the end of the world."
+                                        </p>
+                                    </div>
                                 </div>
 
-                                {/* RIGHT — RELIC */}
-                                <div className="relative flex justify-center">
-                                    <motion.div
-                                        animate={{ rotate: 360 }}
-                                        transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-                                        className="absolute w-[120%] aspect-square border border-[#cda56e]/10 rounded-full"
-                                    />
-
-                                    <motion.div
-                                        initial={{ opacity: 0, scale: 0.9 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        transition={{ duration: 1.4 }}
-                                        className="relative w-[240px] aspect-[3/4] bg-white/[0.02] backdrop-blur-3xl border border-white/10 shadow-[0_0_100px_rgba(205,165,110,0.15)] overflow-hidden"
-                                    >
-                                        <Image
-                                            src="/hermes.png"
-                                            alt="Hermes"
-                                            fill
-                                            className="object-cover sepia-[0.4] brightness-75 hover:brightness-100 transition-all duration-[3s]"
-                                        />
-
-                                        {/* SCANLINE */}
-                                        <motion.div
-                                            animate={{ y: ["-100%", "300%"] }}
-                                            transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-                                            className="absolute inset-x-0 h-px bg-[#cda56e]/50 shadow-[0_0_12px_#cda56e]"
-                                        />
-
-                                        <div className="absolute inset-6 border border-[#cda56e]/20 pointer-events-none" />
-                                    </motion.div>
+                                {/* RIGHT MARGIN: VERTICAL TEXT */}
+                                <div className="w-10 border-l border-[#cda56e]/10 flex items-center justify-center">
+                                    <span className="[writing-mode:vertical-rl] font-serif text-[10px] tracking-[0.5em] text-[#cda56e]/30 uppercase">Divine Messenger</span>
                                 </div>
+                            </div>
+
+                            {/* BOTTOM BANNER */}
+                            <div className="h-12 flex items-center justify-center border-t border-[#cda56e]/10">
+                                <span className="font-serif text-sm tracking-[0.8em] text-[#cda56e]/60 uppercase ml-8">Tuhin ठाकुर</span>
                             </div>
                         </div>
                     </motion.div>
