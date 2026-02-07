@@ -77,6 +77,11 @@ const WorkSidebar = () => (
     <div className="hidden xl:flex flex-col w-[300px] border-r border-t border-b border-white/10 bg-black/40 backdrop-blur-sm self-stretch
       overflow-hidden   h-screen">
         <div className="grid grid-cols-[1fr_2.5fr] h-full">
+            {/* <div className="absolute top-[55%] -right-16 translate-x-1 -rotate-90">
+                <div className="px-10 py-2 border border-white/10 rounded-full bg-black/80 shadow-[0_0_30px_rgba(0,0,0,0.5)] backdrop-blur-xl">
+                    <span className="text-[11px] tracking-[0.6em] uppercase text-[#d4d4d4] font-medium">Moscow</span>
+                </div>
+            </div> */}
             {/* Left Column */}
             <div className="flex flex-col border-r border-white/10 h-full">
                 <div className="p-4 border-b border-white/10 h-32 flex flex-col justify-end">
@@ -117,15 +122,11 @@ const WorkSidebar = () => (
                 </div>
 
                 {/* Moscow Pill - Positioned relative to the right edge */}
-                <div className="absolute top-[55%] -right-5 translate-x-1/2 -rotate-90">
-                    <div className="px-10 py-2 border border-white/10 rounded-full bg-black/80 shadow-[0_0_30px_rgba(0,0,0,0.5)] backdrop-blur-xl">
-                        <span className="text-[11px] tracking-[0.6em] uppercase text-[#d4d4d4] font-medium">Moscow</span>
-                    </div>
-                </div>
+
 
                 {/* Moon Square at bottom */}
-                <div className="h-48 border-t border-white/10 flex items-center justify-center bg-black/10 p-8">
-                    <div className="relative w-24 h-24 group">
+                <div className="h-48 border-t border-white/10 flex items-center justify-center bg-black/10 p-4">
+                    <div className="relative w-28 h-28 group">
                         <motion.div
                             initial={{ rotate: -15 }}
                             animate={{ rotate: 15 }}
@@ -138,9 +139,7 @@ const WorkSidebar = () => (
                             </div>
                         </motion.div>
 
-                        {/* Decorative corner markers */}
-                        <div className="absolute -top-2 -left-2 w-4 h-4 border-t border-l border-white/10" />
-                        <div className="absolute -bottom-2 -right-2 w-4 h-4 border-b border-r border-white/10" />
+
                     </div>
                 </div>
             </div>
@@ -234,13 +233,8 @@ export default function Work() {
                                             whileInView={{ opacity: 1, x: 0 }}
                                             transition={{ duration: 0.8, delay: 0.1 }}
                                         >
-                                            <motion.span
-                                                className="font-serif italic text-xl md:text-2xl mb-2 block tracking-tight"
-                                                animate={{ color: activeIndex === index ? work.themeColor : '#a68b5c' }}
-                                            >
-                                                {work.subtitle}
-                                            </motion.span>
-                                            <h3 className="text-5xl md:text-7xl lg:text-8xl font-serif tracking-tighter uppercase leading-[0.85] mb-6">
+
+                                            <h3 className="text-5xl  lg:text-6xl font- tracking-tighter uppercase leading-[0.85] mb-6">
                                                 {work.title}
                                             </h3>
                                         </motion.div>
@@ -254,26 +248,6 @@ export default function Work() {
                                             {work.description}
                                         </motion.p>
 
-                                        <motion.div
-                                            initial={{ opacity: 0, x: 40 }}
-                                            whileInView={{ opacity: 1, x: 0 }}
-                                            transition={{ duration: 0.8, delay: 0.3 }}
-                                            className="pt-10 border-t border-white/5 flex items-center gap-8"
-                                        >
-                                            <motion.div
-                                                className="w-16 h-[1px]"
-                                                animate={{ backgroundColor: activeIndex === index ? work.themeColor : 'rgba(255,255,255,0.1)' }}
-                                            />
-                                            <div className="flex flex-col">
-                                                <span className="text-[10px] uppercase tracking-[0.4em] text-white/30 mb-1">Mythological Association</span>
-                                                <motion.span
-                                                    className="text-xs uppercase tracking-[0.3em] font-bold"
-                                                    animate={{ color: activeIndex === index ? work.themeColor : '#a68b5c' }}
-                                                >
-                                                    {work.mythos}
-                                                </motion.span>
-                                            </div>
-                                        </motion.div>
 
                                         <motion.div
                                             initial={{ opacity: 0, y: 20 }}

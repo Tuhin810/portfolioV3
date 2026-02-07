@@ -53,6 +53,69 @@ const PORTALS = [
     },
 ];
 
+const TrialsSidebar = () => (
+    <div className="hidden lg:flex flex-col w-[300px] border border-white/10 bg-black/40 backdrop-blur-sm self-stretch overflow-hidden h-screen relative">
+        <div className="grid grid-cols-[1fr_2.5fr] h-full">
+
+
+            {/* Right Column */}
+            <div className="flex flex-col relative h-full">
+                <div className="h-48 border-b border-white/10 flex items-center justify-center bg-black/10 ">
+                    <img src="/start.png" alt="" className="w-full h-full object-cover" />
+                </div>
+                {/* Vertical Text Area */}
+                <div className="flex-1 flex items-center justify-center py-12">
+                    <h2 className="text-[120px] font-serif text-[#ece4d9]/50 uppercase tracking-tighter [writing-mode:vertical-rl] rotate-0 select-none">
+                        TRIALS
+                    </h2>
+                </div>
+
+                {/* Moscow Pill - Positioned relative to the right edge */}
+                <div className="absolute top-[55%] -right-5 translate-x-1/2 -rotate-90">
+                    <div className="px-10 py-2 border border-white/10 rounded-full bg-black/80 shadow-[0_0_30px_rgba(0,0,0,0.5)] backdrop-blur-xl">
+                        <span className="text-[11px] tracking-[0.6em] uppercase text-[#d4d4d4] font-medium">Moscow</span>
+                    </div>
+                </div>
+
+                {/* Moon Square at bottom */}
+
+            </div>
+            {/* Left Column */}
+            <div className="flex flex-col border-l border-white/10 h-full">
+                <div className="p-4 border-b border-white/10 h-32 flex flex-col justify-end">
+                    <p className="text-[10px] text-[#d4cdbc]/40 uppercase leading-tight tracking-[0.2em] font-sans">
+                        System.<br />
+                        Archive.<br />
+                        Vol.03
+                    </p>
+                </div>
+
+                <div className="flex-1 border-b border-white/10 relative group overflow-hidden bg-black/40 min-h-[300px]">
+                    <div className="absolute inset-0 opacity-20 grayscale transition-all duration-1000 group-hover:opacity-40 group-hover:scale-110">
+                        <img
+                            src="/gate3.png"
+                            alt="Sidebar Decoration"
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+                </div>
+
+                <div className="p-4 h-40 flex flex-col justify-start">
+                    <p className="text-[10px] text-[#d4cdbc]/40 uppercase leading-tight tracking-[0.2em] font-sans">
+                        Temporal.<br />
+                        Entity.<br />
+                        Fragment
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        {/* Aesthetic vertical edge line */}
+        <div className="absolute top-0 left-2 w-[1px] h-full bg-white/5" />
+    </div>
+);
+
 export const Trials: React.FC = () => {
     const [view, setView] = useState<ViewState>("default");
     const [zoomingPortal, setZoomingPortal] = useState<string | null>(null);
@@ -76,7 +139,7 @@ export const Trials: React.FC = () => {
                 {view === "default" ? (
                     <motion.div
                         key="gateway-world"
-                        className="w-full h-screen grid grid-cols-1 lg:grid-cols-12 overflow-hidden"
+                        className="w-full h-screen flex overflow-hidden"
                         animate={zoomingPortal ? {
                             scale: 18,
                             opacity: 0,
@@ -92,7 +155,7 @@ export const Trials: React.FC = () => {
                         }}
                     >
                         {/* LEFT: THE GATES OF OLYMPUS */}
-                        <div className="lg:col-span-9 relative flex flex-col justify-between p-8 md:p-14 h-full border-r border-white/5">
+                        <div className="flex-1 relative flex flex-col justify-between p-8 md:p-14 h-full border-l border-white/5">
                             {/* Header */}
                             <div className="flex justify-between items-start uppercase text-[10px] tracking-[0.8em] opacity-30">
                                 <div className="flex items-center gap-3">
@@ -103,7 +166,7 @@ export const Trials: React.FC = () => {
                             </div>
 
                             {/* Arches Interaction Area */}
-                            <div className="flex-1 flex items-end justify-between w-full max-w-7xl mx-auto pb-12 pt-0 px-8 -mb-10">
+                            <div className="flex-1 flex items-end justify-between w-full max-w-7xl mx-auto pb-12 pt-0 px-4 -mb-10 gap-10">
                                 {PORTALS.map((portal) => (
                                     <div
                                         key={portal.id}
@@ -175,35 +238,8 @@ export const Trials: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* RIGHT: THE CHRONICLES (Editorial Sidebar) */}
-                        <div className="lg:col-span-3 h-full bg-[#0a0a0a] border-l border-white/5 p-12 flex flex-col justify-between relative">
-                            <div className="space-y-16">
-                                <div className="space-y-6">
-                                    <div className="w-12 h-[px] bg-gold-leaf/40" />
-                                    <h2 className="text-4xl font-serif  gold-text tracking- uppercase leading-[0.85]">
-                                        The <br /> Chronicles
-                                    </h2>
-                                    <p className="text-[10px] tracking-[0.4em] uppercase text-white/30 italic">Records of the Architect</p>
-                                </div>
-
-                                <div className="space-y-12">
-                                    <p className="text-[11px] leading-[2] text-justify text-[#d4cdbc]/50 font-light hyphens-auto uppercase tracking-widest">
-                                        In the architecture of our world, we found structure resisting its own weight.
-                                        The systems of old were bound by legacy gravity, collapsing into noise.
-                                        We forged order through a stateless, divine architecture.
-                                    </p>
-                                    <p className="text-[11px] leading-[2] text-justify text-[#d4cdbc]/50 font-light hyphens-auto uppercase tracking-widest">
-                                        The craftsman does not merely build; he listens to the silence between the stones.
-                                        Every pixel was a trial, every line a vow. order is the highest form of silence.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="mt-auto flex items-center justify-between border-t border-white/5 pt-8">
-                                <span className="text-[9px] tracking-[1em] uppercase opacity-20">Volume III</span>
-                                <div className="w-2 h-2 rounded-full bg-gold-leaf/20 animate-pulse" />
-                            </div>
-                        </div>
+                        {/* RIGHT: THE TRIALS SIDEBAR */}
+                        <TrialsSidebar />
                     </motion.div>
                 ) : (
                     <div key="active-stage" className="fixed inset-0 z-[200]">
