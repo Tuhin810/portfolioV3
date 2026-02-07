@@ -15,9 +15,61 @@ export const Arrival: React.FC = () => {
     const scale = useTransform(scrollYProgress, [0, 1], [1, 0.85]);
     const blur = useTransform(scrollYProgress, [0, 0.5], ["blur(0px)", "blur(12px)"]);
     const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
+    const rotateSlow = useTransform(scrollYProgress, [0, 1], [0, 45]);
+    const rotateOpposite = useTransform(scrollYProgress, [0, 1], [0, -45]);
 
     return (
-        <section ref={containerRef} className="relative flex flex-col items-center justify-center min-h-screen px-6 w-full max-w-[100vw] overflow-hidden">
+        <section ref={containerRef} className="relative flex flex-col items-center justify-center min-h-screen px-6 w-full max-w-[100vw] overflow-hidden bg-background">
+
+            {/* --- EXACT GEOMETRY BACKGROUND LAYER (REPLICATING REFERENCE) --- */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0">
+                {/* Horizontal Horizon Line with End Nodes */}
+                <div className="absolute w-[95vw] h-[1px] flex items-center justify-center top-1/2 -translate-y-1/2">
+                    <motion.div
+                        initial={{ scaleX: 0, opacity: 0 }}
+                        animate={{ scaleX: 1, opacity: 0.3 }}
+                        transition={{ duration: 2, ease: "circOut" }}
+                        className="w-full h-full bg-gradient-to-r from-transparent via-[#cda56e] to-transparent"
+                    />
+                    <div className="absolute left-0 w-1.5 h-1.5 rounded-full bg-[#cda56e] opacity-40 shadow-[0_0_8px_rgba(205,165,110,0.5)]" />
+                    <div className="absolute right-0 w-1.5 h-1.5 rounded-full bg-[#cda56e] opacity-40 shadow-[0_0_8px_rgba(205,165,110,0.5)]" />
+                </div>
+
+                {/* Symmetrical Lateral Arcs (Precisely as in reference) */}
+                <div className="absolute inset-0 flex items-center justify-between px-[10%] opacity-20">
+                    <div className="relative w-[300px] h-[300px] md:w-[600px] md:h-[600px] flex items-center justify-center translate-x-16">
+                        <motion.div style={{ rotate: rotateSlow }} className="absolute inset-0 border border-[#cda56e] rounded-full" />
+                        <div className="absolute top-1/2 -left-1 w-2 h-2 bg-[#cda56e] rounded-full -translate-y-1/2" />
+                    </div>
+                    <div className="relative w-[300px] h-[300px] md:w-[600px] md:h-[600px] flex items-center justify-center -translate-x-16">
+                        <motion.div style={{ rotate: rotateOpposite }} className="absolute inset-0 border border-[#cda56e] rounded-full" />
+                        <div className="absolute top-1/2 -right-1 w-2 h-2 bg-[#cda56e] rounded-full -translate-y-1/2" />
+                    </div>
+                </div>
+
+                {/* Central Orbital Ring with Moon Phase Nodes */}
+                <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 0.4 }}
+                    transition={{ duration: 2 }}
+                    className="relative w-[85vw] h-[85vw] max-w-[580px] max-h-[580px] border border-[#cda56e]/60 rounded-full"
+                >
+                    {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => (
+                        <div
+                            key={angle}
+                            className="absolute w-2.5 h-2.5 md:w-3.5 md:h-3.5 rounded-full border border-[#cda56e] bg-[#0a0a09]"
+                            style={{
+                                top: "50%",
+                                left: "50%",
+                                transform: `rotate(${angle}deg) translate(clamp(150px, 42vw, 290px)) rotate(-${angle}deg) translate(-50%, -50%)`,
+                            }}
+                        >
+                            <div className={`absolute inset-0.5 rounded-full ${i % 2 === 0 ? 'bg-[#cda56e]/40' : 'bg-transparent border border-[#cda56e]/20'}`} />
+                        </div>
+                    ))}
+                </motion.div>
+            </div>
+
             {/* Top Label & Logo */}
             <motion.div
                 initial={{ opacity: 0, y: -10 }}
@@ -51,14 +103,14 @@ export const Arrival: React.FC = () => {
 
             {/* Main Name Reveal */}
             <motion.div
-                style={{ opacity, scale, filter: blur, y }}
+                style={{ opacity, scale, filter: blur, y, zIndex: 20 }}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 4, delay: 1.5, ease: [0.22, 1, 0.36, 1] }}
-                className="glow-text-container w-full flex flex-col items-center justify-center"
+                className="glow-text-container w-full flex flex-col items-center justify-center relative backdrop-blur-[2px]"
             >
                 <div className="volumetric-glow" />
-                <h1 className="text-[25vw] font-bold tracking-[-0.08em] uppercase leading-none liquid-light select-none text-center">
+                <h1 className="text-[25vw] font-bold tracking-[-0.08em] uppercase leading-none liquid-light select-none text-center relative z-10 drop-shadow-[0_0_30px_rgba(0,0,0,0.5)]">
                     Tuhin
                 </h1>
             </motion.div>
