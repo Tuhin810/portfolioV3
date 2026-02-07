@@ -64,8 +64,11 @@ export const WorkItem = ({ work, index, progress, itemCount }: WorkItemProps) =>
 
                 <div className="flex items-center gap-8 w-full">
                     {/* PRIMARY ACTION: THE ARCHITECTURAL PLINTH */}
-                    <motion.button
-                        className="group relative flex items-center gap-4 px-12 py-5 bg-transparent border border-[#cda56e]/20 overflow-hidden pointer-events-auto"
+                    <motion.a
+                        href={work.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group relative flex items-center gap-4 px-12 py-5 bg-transparent border border-[#cda56e]/20 overflow-hidden pointer-events-auto cursor-pointer"
                         whileHover={{ scale: 1.05 }}
                     >
                         {/* Greek Meander (Key) Decorative Corners */}
@@ -85,11 +88,14 @@ export const WorkItem = ({ work, index, progress, itemCount }: WorkItemProps) =>
 
                         {/* Monumental Underline */}
                         <div className="absolute bottom-3 left-12 right-12 h-px scale-x-0 group-hover:scale-x-100 transition-transform duration-700 bg-gradient-to-r from-transparent via-[#cda56e]/40 to-transparent" />
-                    </motion.button>
+                    </motion.a>
 
                     {/* SECONDARY ACTION: THE SACRED MEDALLION (GitHub) */}
-                    <motion.button
-                        className="group relative w-16 h-16 bg-black border border-[#cda56e]/20 rounded-full flex items-center justify-center pointer-events-auto overflow-hidden transition-all duration-700 hover:border-[#cda56e]/60 hover:shadow-[0_0_25px_rgba(205,165,110,0.15)]"
+                    <motion.a
+                        href={work.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group relative w-16 h-16 bg-black border border-[#cda56e]/20 rounded-full flex items-center justify-center pointer-events-auto overflow-hidden transition-all duration-700 hover:border-[#cda56e]/60 hover:shadow-[0_0_25px_rgba(205,165,110,0.15)] cursor-pointer"
                         whileHover={{ rotate: 360 }}
                         title="View Source Relic"
                     >
@@ -108,7 +114,7 @@ export const WorkItem = ({ work, index, progress, itemCount }: WorkItemProps) =>
                         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1px] h-2 bg-[#cda56e]/20 group-hover:bg-[#cda56e]/40" />
                         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-[1px] bg-[#cda56e]/20 group-hover:bg-[#cda56e]/40" />
                         <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-[1px] bg-[#cda56e]/20 group-hover:bg-[#cda56e]/40" />
-                    </motion.button>
+                    </motion.a>
                 </div>
             </motion.div>
         </motion.div>

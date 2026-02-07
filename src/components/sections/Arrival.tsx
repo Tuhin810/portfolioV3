@@ -4,7 +4,7 @@ import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 
-export const Arrival: React.FC = () => {
+export const Arrival: React.FC<{ onHit?: () => void }> = ({ onHit }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -135,6 +135,7 @@ export const Arrival: React.FC = () => {
             >
                 {/* Badge 1: Solid */}
                 <motion.div
+                    onClick={onHit}
                     whileHover={{ scale: 1.05, backgroundColor: "#cda56e" }}
                     className="w-24 h-24 lg:w-32 lg:h-32 rounded-full bg-[#cda56e] flex items-center justify-center cursor-pointer transition-colors duration-700 shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
                 >

@@ -8,7 +8,9 @@ export const WORKS = [
         god: "Hermes",
         mythos: "The Swift-Footed Messenger",
         themeColor: "#a68b5c", // Bronze
-        image: "/work/chingc.png"
+        image: "/work/chingc.png",
+        liveUrl: "#",
+        githubUrl: "#"
     },
     {
         id: "02",
@@ -18,7 +20,9 @@ export const WORKS = [
         god: "Athena",
         mythos: "Goddess of Wisdom & Strategy",
         themeColor: "#387299", // Azure
-        image: "/work/hobib.png"
+        image: "/work/hobib.png",
+        liveUrl: "#",
+        githubUrl: "#"
     },
   
     {
@@ -29,7 +33,9 @@ export const WORKS = [
         god: "Apollo",
         mythos: "God of Music, Light & Truth",
         themeColor: "#e0b870", // Sunlight
-        image: "/work/high.png"
+        image: "/work/high.png",
+        liveUrl: "#",
+        githubUrl: "#"
     },
      {
         id: "04",
@@ -38,8 +44,10 @@ export const WORKS = [
         description: "A symphony of interactive media and artistic expression. Harmonizing visual data with auditory feedback to create a transcendent digital performance.",
         god: "Apollo",
         mythos: "God of Music, Light & Truth",
-        themeColor: "#e0b870", // Sunlight
-        image: "/work/mart.png"
+        themeColor: "#e0b870", // Sunlight",
+        image: "/work/mart.png",
+        liveUrl: "#",
+        githubUrl: "#"
     },
     {
         id: "05",
@@ -48,8 +56,10 @@ export const WORKS = [
         description: "A symphony of interactive media and artistic expression. Harmonizing visual data with auditory feedback to create a transcendent digital performance.",
         god: "Apollo",
         mythos: "God of Music, Light & Truth",
-        themeColor: "#e0b870", // Sunlight
-        image: "/work/raze.png"
+        themeColor: "#e0b870", // Sunlight",
+        image: "/work/raze.png",
+        liveUrl: "#",
+        githubUrl: "#"
     },
     {
         id: "06",
@@ -58,8 +68,10 @@ export const WORKS = [
         description: "A robust infrastructure designed for resilience and performance, echoing the precision of the divine blacksmith's craft. Built with scalable microservices and immutable data structures.",
         god: "Hephaestus",
         mythos: "Master of Fire & Craft",
-        themeColor: "#c5a028", // Gold
-        image: "/work/s2.png"
+        themeColor: "#c5a028", // Gold",
+        image: "/work/s2.png",
+        liveUrl: "#",
+        githubUrl: "#"
     },
 ];
 
