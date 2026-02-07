@@ -19,6 +19,12 @@ const bebas = Bebas_Neue({
   subsets: ["latin"],
 });
 
+import { Syne } from "next/font/google";
+const syne = Syne({
+  variable: "--font-syne",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: "Thakur | The Archive of Whispers",
   description: "An editorial digital chronicle and portfolio of Thakur.",
@@ -32,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${inter.variable} ${playfair.variable} ${bebas.variable} font-sans antialiased bg-background text-foreground min-h-screen selection:bg-accent/30`}
+        className={`${inter.variable} ${playfair.variable} ${bebas.variable} ${syne.variable} font-sans antialiased bg-background text-foreground min-h-screen selection:bg-accent/30`}
       >
         <Soundtrack />
         <div className="film-grain" />

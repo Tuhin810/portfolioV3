@@ -11,6 +11,7 @@ import { Trials } from "@/components/sections/Trials";
 import { Odyssey } from "@/components/sections/Odyssey";
 import { Offering } from "@/components/sections/Offering";
 import WorkPage from "@/components/sections/Work";
+import { Images } from "@/components/sections/Images";
 
 export default function Home() {
   const [started, setStarted] = useState(false);
@@ -38,6 +39,8 @@ export default function Home() {
             <Studio />
 
             <WorkPage />
+
+            <Images />
 
             {/* Stage V: THE ODYSSEY */}
             <Odyssey />

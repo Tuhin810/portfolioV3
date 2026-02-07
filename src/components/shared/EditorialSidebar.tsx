@@ -56,7 +56,7 @@ export const EditorialSidebar: React.FC<EditorialSidebarProps> = ({
     );
 
     const TitleColumn = (
-        <div className="flex flex-col relative h-full">
+        <div className="flex flex-col relative h-full border-r border-white/10">
             {topImage && (
                 <div className="h-48 border-b border-white/10 flex items-center justify-center bg-black/10 overflow-hidden">
                     <img src={topImage} alt="" className="w-full h-full object-cover" />
@@ -67,6 +67,8 @@ export const EditorialSidebar: React.FC<EditorialSidebarProps> = ({
                 <h2
                     className="text-[120px] font-serif text-[#ece4d9]/50 uppercase tracking-tighter [writing-mode:vertical-rl] select-none"
                     style={{ transform: `rotate(${rotation}deg)` }}
+
+
                 >
                     {title}
                 </h2>

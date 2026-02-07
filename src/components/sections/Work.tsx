@@ -76,15 +76,15 @@ const WorkItem = ({ work, index, progress }: { work: typeof WORKS[0], index: num
             }}
             className="absolute inset-0 w-full h-full flex flex-col lg:flex-row items-center justify-center px-8 md:px-20 gap-12 lg:gap-24"
         >
-            <div className="relative w-full lg:w-[40%] aspect-[4/5] max-w-[340px] group shrink-0">
+            <div className="relative w-full lg:w-[60%] aspect-[4/5] max-w-[540px] group shrink-0 h-[400px]">
                 <motion.div
                     style={{ scale, borderColor: `${work.themeColor}33` }}
-                    className="absolute inset-0 border-[0.5px] p-3 rounded-t-full transition-colors duration-1000 shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+                    className="absolute inset-0 border-[0.5px] p-3 rounded-lg transition-colors duration-1000 shadow-[0_0_50px_rgba(0,0,0,0.5)]"
                 >
-                    <div className="w-full h-full bg-[#111] rounded-t-full relative overflow-hidden flex items-center justify-center p-6 border border-white/5">
+                    <div className="w-full h-full bg-[#111] rounded-lg relative overflow-hidden flex items-center justify-center p-6 border border-white/5">
                         <div className="absolute inset-0 opacity-10 mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
 
-                        <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-t-[500px]">
+                        <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-lg">
                             <motion.span
                                 className="text-[120px] font-serif uppercase select-none tracking-tighter opacity-20 pointer-events-none"
                                 style={{ color: work.themeColor }}
@@ -163,7 +163,7 @@ export default function Work() {
     return (
         <section
             ref={sectionRef}
-            className="relative h-[600vh] w-full bg-black text-[#d4cdbc] overflow-visible border-y border-white/5"
+            className="relative h-[600vh] w-full bg-black border-y border-white/10 text-[#d4cdbc] overflow-visible border-y border-white/5"
         >
             <div className="sticky top-0 left-0 h-screen w-full flex items-center justify-center z-10">
                 {/* --- PROPER GEOMETRICAL STRUCTURES (REPLICATING REFERENCE) --- */}
