@@ -8,7 +8,7 @@ export const Images = () => {
     return (
         <section className="relative min-h-screen flex items-center justify-center bg-background overflow-hidden py-16 md:py-16">
             {/* Outer Border Container */}
-            <div className="relative w-[95%] max-w-[1400px] aspect-[16/10] md:aspect-[16/9] border border-[#a68b5c]/30 rounded-[3rem] md:rounded-[5rem] overflow-hidden shadow-2xl">
+            <div className="relative w-full  aspect-[16/10] md:aspect-[16/9]  border-[#a68b5c]/30 rounded-[3rem] md:rounded-[5rem] overflow-hidden shadow-2xl">
 
                 {/* Background Image - The Painting */}
                 <div className="absolute inset-0 z-0 bg-black">
