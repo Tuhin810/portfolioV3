@@ -58,23 +58,6 @@ export const Soundtrack: React.FC = () => {
     const scale = useTransform(scrollYProgress, [0, 0.1], [0.8, 1]);
     const pointerEvents = useTransform(scrollYProgress, (p) => p > 0.05 ? "auto" : "none") as any;
 
-    useEffect(() => {
-        if (audioRef.current) {
-            audioRef.current.volume = 0.5;
-            const playPromise = audioRef.current.play();
-
-            if (playPromise !== undefined) {
-                playPromise.then(() => setIsPlaying(true)).catch(() => {
-                    const firstHit = () => {
-                        audioRef.current?.play();
-                        setIsPlaying(true);
-                        document.removeEventListener('click', firstHit);
-                    };
-                    document.addEventListener('click', firstHit);
-                });
-            }
-        }
-    }, []);
 
     // Simulating progress
     useEffect(() => {
@@ -107,28 +90,29 @@ export const Soundtrack: React.FC = () => {
 
             {/* COMPACT PLAYER - THE VINYL DISC */}
             <div className="relative pointer-events-none">
-                <div className="relative w-64 h-64 lg:w-72 lg:h-72 pointer-events-none">
+                <div className="relative w-40 h-40 lg:w-48 lg:h-48 pointer-events-none">
                     <motion.div
                         onClick={() => setIsOpen(true)}
                         animate={isPlaying ? { rotate: 360 } : { rotate: 0 }}
                         transition={isPlaying ? { duration: 15, repeat: Infinity, ease: "linear" } : { duration: 2, ease: "circOut" }}
-                        className="absolute top-[1%] left-[8%] w-[72%] h-[72%] z-10 cursor-pointer pointer-events-auto rounded-full shadow-[0_40px_80px_rgba(0,0,0,1)] flex items-center justify-center group"
+                        className="absolute top-[5%] left-[5%] w-[80%] h-[80%] z-10 cursor-pointer pointer-events-auto rounded-full shadow-[0_30px_60px_rgba(0,0,0,0.8)] flex items-center justify-center group"
                         style={{ background: "radial-gradient(circle at center, #1a1a1a 0%, #000 100%)" }}
                     >
                         <div className="absolute inset-0 rounded-full border border-white/[0.05]" />
-                        <div className="absolute inset-[30%] rounded-full bg-[#8b1a1a] shadow-inner border border-black/40 flex items-center justify-center overflow-hidden">
+                        <div className="absolute inset-[32%] rounded-full bg-[#8b1a1a] shadow-inner border border-black/40 flex items-center justify-center overflow-hidden">
                             <motion.div
-                                animate={isPlaying ? { scale: [1, 1.1, 1] } : {}}
+                                animate={isPlaying ? { scale: [1, 1.05, 1] } : {}}
                                 transition={{ repeat: Infinity, duration: 2 }}
-                                className="font-display text-[10px] text-white tracking-widest text-center px-4"
+                                className="font-display text-[8px] text-white tracking-widest text-center px-2"
                             >
-                                PLAYING
+                                {isPlaying ? "PLAYING" : "PAUSED"}
                             </motion.div>
                         </div>
                     </motion.div>
-                    <div className="absolute bottom-0 right-0 w-[65%] h-[65%] bg-[#080808] border border-white/[0.07] rounded-xl z-20 shadow-2xl" />
+                    <div className="absolute bottom-4 right-4 w-[60%] h-[60%] bg-[#080808] border border-white/[0.07] rounded-xl z-20 shadow-xl" />
                 </div>
             </div>
+
 
             {/* FULL MEDIA PLAYER MODAL */}
             <AnimatePresence>

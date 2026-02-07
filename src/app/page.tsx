@@ -10,15 +10,13 @@ import { About } from "@/components/sections/About";
 import { Trials } from "@/components/sections/Trials";
 import { Odyssey } from "@/components/sections/Odyssey";
 import { Offering } from "@/components/sections/Offering";
-import { Soundtrack } from "@/components/ui/Soundtrack";
+import WorkPage from "@/components/sections/Work";
 
 export default function Home() {
   const [started, setStarted] = useState(false);
 
   return (
     <div className="relative min-h-screen bg-background">
-      <Soundtrack />
-
       <AnimatePresence mode="wait">
         {!started ? (
           <Prologue onEnter={() => setStarted(true)} />
@@ -38,6 +36,8 @@ export default function Home() {
 
             {/* Stage IV: THE DISCIPLINE */}
             <Studio />
+
+            <WorkPage />
 
             {/* Stage V: THE ODYSSEY */}
             <Odyssey />

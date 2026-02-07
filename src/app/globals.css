@@ -7,7 +7,7 @@
   --accent: #a68b5c;
   --serif: 'Playfair Display', 'Libre Baskerville', serif;
   --sans: 'Montserrat', var(--font-inter), sans-serif;
-  --display: 'Bebas Neue', cursive;
+  --display: var(--font-bebas), 'Bebas Neue', cursive;
   
   /* Mythic Palette */
   --ivory: #e8e4d8;

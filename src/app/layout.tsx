@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Playfair_Display, Bebas_Neue } from "next/font/google";
 import "./globals.css";
+import { Soundtrack } from "@/components/ui/Soundtrack";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -9,6 +10,12 @@ const inter = Inter({
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
+  subsets: ["latin"],
+});
+
+const bebas = Bebas_Neue({
+  weight: "400",
+  variable: "--font-bebas",
   subsets: ["latin"],
 });
 
@@ -25,8 +32,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-background text-foreground min-h-screen selection:bg-accent/30`}
+        className={`${inter.variable} ${playfair.variable} ${bebas.variable} font-sans antialiased bg-background text-foreground min-h-screen selection:bg-accent/30`}
       >
+        <Soundtrack />
         <div className="film-grain" />
         <main className="relative z-10 w-full">
           {children}
