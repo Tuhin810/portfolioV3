@@ -1,149 +1,211 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { Send, Sparkles, ShieldCheck, Globe, X, Mail, Github, Linkedin, Twitter } from "lucide-react";
-import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
+import {
+    Send,
+    Globe,
+    X,
+} from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
-const RomanNumeral = ({ value, className = "" }: { value: string, className?: string }) => (
-    <span className={`font-serif text-[10px] tracking-[0.2em] text-[#cda56e]/40 ${className}`}>{value}</span>
+/* ----------------------------------
+   SMALL UTILS
+----------------------------------- */
+
+const RomanNumeral = ({ value, className = "" }: { value: string; className?: string }) => (
+    <span className={`font-serif text-[10px] tracking-[0.3em] text-[#cda56e]/40 ${className}`}>
+        {value}
+    </span>
 );
 
-export const Offering: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
-    // Prevent scroll when modal is open
+/* ----------------------------------
+   AMBIENT PARTICLES (SCREENSAVER FEEL)
+----------------------------------- */
+
+const AmbientParticles = ({ count = 10 }: { count?: number }) => {
+    return (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+            {Array.from({ length: count }).map((_, i) => {
+                const size = Math.random() * 120 + 60;
+                return (
+                    <motion.div
+                        key={i}
+                        className="absolute rounded-full border border-[#cda56e]/15 bg-[#cda56e]/5 backdrop-blur-2xl"
+                        style={{
+                            width: size,
+                            height: size,
+                            left: `${Math.random() * 100}%`,
+                            top: `${Math.random() * 100}%`,
+                        }}
+                        animate={{
+                            x: [0, 40, -30, 0],
+                            y: [0, -50, 30, 0],
+                            opacity: [0.2, 0.4, 0.2],
+                        }}
+                        transition={{
+                            duration: Math.random() * 30 + 30,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                        }}
+                    />
+                );
+            })}
+        </div>
+    );
+};
+
+/* ----------------------------------
+   MAIN COMPONENT
+----------------------------------- */
+
+export const Offering: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
+    isOpen,
+    onClose,
+}) => {
+    const modalRef = useRef<HTMLDivElement>(null);
+
+    /* Lock scroll + ESC close */
     useEffect(() => {
-        if (isOpen) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "unset";
-        }
+        document.body.style.overflow = isOpen ? "hidden" : "unset";
+
+        const esc = (e: KeyboardEvent) => {
+            if (e.key === "Escape") onClose();
+        };
+
+        window.addEventListener("keydown", esc);
         return () => {
             document.body.style.overflow = "unset";
+            window.removeEventListener("keydown", esc);
         };
-    }, [isOpen]);
+    }, [isOpen, onClose]);
 
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-12">
-                    {/* Backdrop */}
+                <div className="fixed inset-0 z-[100] flex items-center justify-center">
+                    {/* BACKDROP */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-black/95 backdrop-blur-xl"
+                        className="absolute inset-0 bg-black/90 backdrop-blur-2xl"
                     />
 
-                    {/* Modal Content */}
+                    {/* MODAL */}
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                        ref={modalRef}
+                        initial={{ opacity: 0, scale: 0.92, y: 30 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                        transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="relative w-full max-w-7xl max-h-[90vh] bg-black border border-[#cda56e]/20 overflow-y-auto overflow-x-hidden custom-scrollbar shadow-[0_0_100px_rgba(205,165,110,0.1)]"
+                        exit={{ opacity: 0, scale: 0.96, y: 10 }}
+                        transition={{ type: "spring", damping: 28, stiffness: 180 }}
+                        className="relative w-full max-w-4xl max-h-[85vh] bg-black border border-[#cda56e]/20 shadow-[0_0_120px_rgba(205,165,110,0.12)]"
                     >
-                        {/* 1. THE ARCHITECTURAL FRAMEWORK */}
-                        <div className="absolute inset-x-6 inset-y-6 md:inset-x-12 md:inset-y-12 border border-[#cda56e]/10 pointer-events-none z-20">
-                            <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-[#cda56e]/60" />
-                            <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-[#cda56e]/60" />
-                            <div className="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-[#cda56e]/60" />
-                            <div className="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-[#cda56e]/60" />
-                        </div>
+                        {/* AMBIENCE */}
+                        <AmbientParticles />
 
-                        {/* Close Button */}
+                        {/* FRAME */}
+                        <div className="absolute inset-4 md:inset-6 border border-[#cda56e]/10 pointer-events-none z-20" />
+
+                        {/* CLOSE */}
                         <motion.button
-                            whileHover={{ scale: 1.1, rotate: 90 }}
+                            whileHover={{ rotate: 90, scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={onClose}
-                            className="absolute top-8 right-8 z-50 p-3 bg-[#cda56e]/10 text-[#cda56e] rounded-full hover:bg-[#cda56e] hover:text-black transition-all duration-500"
+                            className="absolute top-6 right-6 z-50 p-3 rounded-full bg-[#cda56e]/10 text-[#cda56e] hover:bg-[#cda56e] hover:text-black transition-all duration-500"
                         >
-                            <X size={20} />
+                            <X size={18} />
                         </motion.button>
 
-                        <div className="relative py-24 px-8 md:px-24 flex flex-col items-center">
+                        {/* CONTENT */}
+                        <div className="relative z-10 px-8 py-10 md:px-12 md:py-12">
+                            <div className="grid md:grid-cols-2 gap-8 items-center">
 
-                            {/* Header Section */}
-                            <div className="w-full flex flex-col md:flex-row items-center justify-between gap-16 md:gap-20">
-
-                                {/* Left Side: The Form */}
-                                <div className="w-full md:w-[45%] space-y-12">
-                                    <motion.div
-                                        initial={{ opacity: 0, x: -30 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ duration: 1, delay: 0.2 }}
-                                    >
-                                        <RomanNumeral value="INVOCATION" className="mb-4 block" />
-                                        <h2 className="text-5xl md:text-7xl font-serif text-white tracking-tighter leading-none mb-8">
-                                            Initiate <br /> <span className="text-[#cda56e]">Communion.</span>
+                                {/* LEFT — FORM */}
+                                <div className="space-y-8">
+                                    <div>
+                                        <h2 className="text-3xl md:text-4xl font-serif text-white leading-tight">
+                                            Initiate <br />
+                                            <span className="text-[#cda56e]">Communion.</span>
                                         </h2>
-                                        <p className="font-serif text-white/40 italic leading-relaxed max-w-sm">
-                                            "Across the digital aether, your message becomes a relic in the archive of the unseen master."
+                                        <p className="mt-4 max-w-xs font-serif italic text-white/40 text-sm">
+                                            Across the digital aether, your message becomes a relic.
                                         </p>
-                                    </motion.div>
+                                    </div>
 
-                                    <form className="space-y-8">
-                                        <div className="space-y-2 group">
-                                            <label className="text-[9px] tracking-[0.4em] uppercase text-[#cda56e]/40 font-bold">The Oracle (Email)</label>
+                                    <form className="space-y-6">
+                                        <div>
+                                            <label className="text-[9px] tracking-[0.4em] uppercase text-[#cda56e]/40 font-bold">
+                                                The Oracle (Email)
+                                            </label>
                                             <input
                                                 type="email"
-                                                placeholder="Enter your electronic essence..."
-                                                className="w-full bg-transparent border-b border-[#cda56e]/20 py-4 font-serif text-lg text-white placeholder:text-white/5 focus:outline-none focus:border-[#cda56e] transition-all duration-700"
+                                                placeholder="your@email.com"
+                                                className="w-full bg-transparent border-b border-[#cda56e]/20 py-2 font-serif text-base text-white placeholder:text-white/10 focus:outline-none focus:border-[#cda56e] transition-all duration-700"
                                             />
                                         </div>
 
-                                        <div className="space-y-2 group">
-                                            <label className="text-[9px] tracking-[0.4em] uppercase text-[#cda56e]/40 font-bold">The Prophecy (Message)</label>
+                                        <div>
+                                            <label className="text-[9px] tracking-[0.4em] uppercase text-[#cda56e]/40 font-bold">
+                                                The Prophecy (Message)
+                                            </label>
                                             <textarea
                                                 rows={1}
                                                 placeholder="Speak your truth..."
-                                                className="w-full bg-transparent border-b border-[#cda56e]/20 py-4 font-serif text-lg text-white placeholder:text-white/5 focus:outline-none focus:border-[#cda56e] transition-all duration-700 resize-none"
+                                                className="w-full bg-transparent border-b border-[#cda56e]/20 py-2 font-serif text-base text-white placeholder:text-white/10 focus:outline-none focus:border-[#cda56e] transition-all duration-700 resize-none"
                                             />
                                         </div>
 
                                         <motion.button
-                                            whileHover={{ scale: 1.02 }}
-                                            whileTap={{ scale: 0.98 }}
-                                            className="group flex items-center gap-6 py-6 px-10 bg-[#cda56e] text-black font-serif text-sm tracking-[0.3em] uppercase font-bold overflow-hidden relative"
+                                            whileHover={{ scale: 1.03 }}
+                                            whileTap={{ scale: 0.97 }}
+                                            className="relative overflow-hidden flex items-center justify-center gap-4 px-10 py-4 bg-[#cda56e] text-black font-serif tracking-[0.3em] uppercase text-xs font-bold"
                                         >
-                                            <span className="relative z-10">Ignite Connection</span>
-                                            <Send size={18} className="relative z-10 group-hover:translate-x-2 transition-transform duration-500" />
-                                            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                                            <span>Ignite Connection</span>
+                                            <Send size={18} />
+                                            <motion.span
+                                                className="absolute inset-0 bg-white/30"
+                                                initial={{ y: "100%" }}
+                                                whileHover={{ y: 0 }}
+                                                transition={{ duration: 0.5 }}
+                                            />
                                         </motion.button>
                                     </form>
                                 </div>
 
-                                {/* Right Side: The Sculpture */}
-                                <div className="w-full md:w-1/2 relative flex items-center justify-center">
+                                {/* RIGHT — RELIC */}
+                                <div className="relative flex justify-center">
                                     <motion.div
-                                        initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
-                                        animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                                        transition={{ duration: 1.5, delay: 0.4 }}
-                                        className="relative w-full max-w-[400px] aspect-[3/4] p-4 bg-white/[0.02] backdrop-blur-3xl border border-white/10 shadow-2xl overflow-hidden group/relic"
+                                        animate={{ rotate: 360 }}
+                                        transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+                                        className="absolute w-[120%] aspect-square border border-[#cda56e]/10 rounded-full"
+                                    />
+
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 1.4 }}
+                                        className="relative w-[240px] aspect-[3/4] bg-white/[0.02] backdrop-blur-3xl border border-white/10 shadow-[0_0_100px_rgba(205,165,110,0.15)] overflow-hidden"
                                     >
                                         <Image
                                             src="/hermes.png"
-                                            alt="Hermes the Messenger"
+                                            alt="Hermes"
                                             fill
-                                            className="object-cover sepia-[0.4] brightness-75 group-hover/relic:scale-110 group-hover/relic:brightness-100 transition-all duration-[3s]"
+                                            className="object-cover sepia-[0.4] brightness-75 hover:brightness-100 transition-all duration-[3s]"
                                         />
 
-                                        <div className="absolute inset-0 p-8 flex flex-col justify-between border-[0.5px] border-[#cda56e]/20 m-4 pointer-events-none">
-                                            <div className="flex justify-between items-start">
-                                                <span className="font-serif text-[10px] tracking-[0.5em] text-[#cda56e]">01. HERMES</span>
-                                                <Globe size={14} className="text-[#cda56e]/40 animate-pulse" />
-                                            </div>
-                                            <div className="space-y-4">
-                                                <h3 className="text-4xl font-serif text-white/90 leading-tight">The <br /> Messenger's <br /> Burden.</h3>
-                                                <div className="w-12 h-px bg-[#cda56e]" />
-                                                <p className="text-[9px] tracking-[0.2em] text-[#cda56e]/60 uppercase">Sanctuary Alpha-7</p>
-                                            </div>
-                                        </div>
+                                        {/* SCANLINE */}
+                                        <motion.div
+                                            animate={{ y: ["-100%", "300%"] }}
+                                            transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                                            className="absolute inset-x-0 h-px bg-[#cda56e]/50 shadow-[0_0_12px_#cda56e]"
+                                        />
+
+                                        <div className="absolute inset-6 border border-[#cda56e]/20 pointer-events-none" />
                                     </motion.div>
                                 </div>
                             </div>
-
-
                         </div>
                     </motion.div>
                 </div>
