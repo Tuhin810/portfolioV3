@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 
 const TRACKS = [
     { id: 1, title: "Sacred Silence", duration: "4:22", artist: "The Architect" },
@@ -15,10 +15,17 @@ export const Soundtrack: React.FC = () => {
     const [currentTrack, setCurrentTrack] = useState(TRACKS[0]);
     const [isPlaying, setIsPlaying] = useState(false);
 
+    const { scrollYProgress } = useScroll();
+
+    // Hide initially, show as we scroll away from the landing (Arrival) section
+    const opacity = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
+    const scale = useTransform(scrollYProgress, [0, 0.1], [0.8, 1]);
+    const pointerEvents = useTransform(scrollYProgress, (p) => p > 0.05 ? "auto" : "none") as any;
+
     return (
-        <>
+        <motion.div style={{ opacity, scale, pointerEvents }} className="fixed bottom-[-15px] right-[-15px] z-[300]">
             {/* THE PHOTOGRAPHIC REALISTIC VINYL INTERFACE */}
-            <div className="fixed bottom-[-15px] right-[-15px] z-[300] pointer-events-none">
+            <div className="relative pointer-events-none">
                 <div className="relative w-64 h-64 lg:w-72 lg:h-72 pointer-events-none">
 
                     {/* 1. THE VINYL RECORD - High visibility peeking state */}
@@ -211,6 +218,6 @@ export const Soundtrack: React.FC = () => {
                     background: rgba(212, 175, 55, 0.4);
                 }
             `}</style>
-        </>
+        </motion.div>
     );
 };

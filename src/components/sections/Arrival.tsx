@@ -23,9 +23,9 @@ export const Arrival: React.FC = () => {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 0.5, y: 0 }}
                 transition={{ duration: 3, delay: 0.1 }}
-                className="absolute top-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+                className="absolute top-16 left-1/2 -translate-x-1/2 -mt-5 flex flex-col items-center gap-2"
             >
-                <div className="relative w-16 h-16 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-700 mix-blend-screen">
+                <div className="relative w-32 h-32 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-700 mix-blend-screen">
                     <Image
                         src="/mythic-logo.png"
                         alt="Mythic Logo"
@@ -58,7 +58,7 @@ export const Arrival: React.FC = () => {
                 className="glow-text-container w-full flex flex-col items-center justify-center"
             >
                 <div className="volumetric-glow" />
-                <h1 className="text-[22vw] font-bold tracking-[-0.08em] uppercase leading-none liquid-light select-none text-center">
+                <h1 className="text-[25vw] font-bold tracking-[-0.08em] uppercase leading-none liquid-light select-none text-center">
                     Tuhin
                 </h1>
             </motion.div>
@@ -72,6 +72,30 @@ export const Arrival: React.FC = () => {
                 className="absolute bottom-12 left-1/2 px-12 text-white/40 text-[9px] uppercase tracking-[0.4em] font-medium opacity-30 whitespace-nowrap"
             >
                 <p className="animate-pulse">Begin the descent</p>
+            </motion.div>
+
+            {/* STATUS BADGES - BOTTOM LEFT */}
+            <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 2, delay: 5 }}
+                className="absolute bottom-12 left-12 flex items-center gap-6 z-30 pointer-events-auto"
+            >
+                {/* Badge 1: Solid */}
+                <motion.div
+                    whileHover={{ scale: 1.05, backgroundColor: "#cda56e" }}
+                    className="w-24 h-24 lg:w-32 lg:h-32 rounded-full bg-[#cda56e] flex items-center justify-center cursor-pointer transition-colors duration-700 shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
+                >
+                    <span className="text-[8px] font-bold tracking-[0.4em] text-black">HIT</span>
+                </motion.div>
+
+                {/* Badge 2: Outline */}
+                <motion.div
+                    whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,1)" }}
+                    className="w-24 h-24 lg:w-32 lg:h-32 rounded-full border border-white/10 flex items-center justify-center cursor-pointer transition-all duration-700 hover:bg-white/[0.02]"
+                >
+                    <span className="text-[8px] font-bold tracking-[0.4em] text-white/40">NEW</span>
+                </motion.div>
             </motion.div>
         </section>
     );

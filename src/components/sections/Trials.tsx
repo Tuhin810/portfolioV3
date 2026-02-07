@@ -14,6 +14,7 @@ const PORTALS = [
         label: "The Forge",
         title: "Work",
         view: "work" as ViewState,
+        cover: "/gate1.png",
         x: "15%",
         y: "85%",
         w: "w-[16vw]",
@@ -27,6 +28,7 @@ const PORTALS = [
         label: "The Odyssey",
         title: "Experience",
         view: "experience" as ViewState,
+        cover: "/gate2.png",
         x: "42%",
         y: "85%",
         w: "w-[20vw]",
@@ -40,6 +42,7 @@ const PORTALS = [
         label: "The Trials",
         title: "Projects",
         view: "projects" as ViewState,
+        cover: "/gate3.png",
         x: "75%",
         y: "85%",
         w: "w-[28vw]",
@@ -120,9 +123,9 @@ export const Trials: React.FC = () => {
                                             {/* 2. LAYER: THE BANNER COVER (Sketches) */}
                                             <div className="absolute inset-0 transition-opacity duration-1000 group-hover:opacity-0 flex items-center justify-center">
                                                 <img
-                                                    src="/greek_myth_sketch_1_1770305784106.png"
+                                                    src={portal.cover}
                                                     alt="Cover"
-                                                    className="w-full h-full object-cover opacity-20 grayscale saturate-0 group-hover:scale-110 transition-transform duration-[3s]"
+                                                    className="w-full h-full object-cover opacity-40 grayscale-0 group-hover:scale-110 transition-transform duration-[3s]"
                                                 />
                                                 {/* Threshold Banner Label */}
                                                 <div className="absolute bottom-16 flex flex-col items-center gap-3">
@@ -200,9 +203,6 @@ export const Trials: React.FC = () => {
                                 <span className="text-[9px] tracking-[1em] uppercase opacity-20">Volume III</span>
                                 <div className="w-2 h-2 rounded-full bg-gold-leaf/20 animate-pulse" />
                             </div>
-
-                            {/* Grainy Texture */}
-                            <div className="absolute inset-0 pointer-events-none opacity-[0.06] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
                         </div>
                     </motion.div>
                 ) : (

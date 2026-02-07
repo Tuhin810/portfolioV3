@@ -2,11 +2,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0a; /* Near-black charcoal */
-  --foreground: #f2ede4d6; /* Warm parchment / off-white */
-  --accent: #a68b5c; /* Muted antique gold */
+  --background: #060606;
+  --foreground: #f2ede4d6;
+  --accent: #a68b5c;
   --serif: 'Playfair Display', 'Libre Baskerville', serif;
   --sans: var(--font-inter), sans-serif;
+  
+  /* Mythic Palette */
+  --ivory: #e8e4d8;
+  --gold-leaf: #c5a028;
+  --deep-azure: #080d14;
+  --marble-gray: #151516;
 }
 
 @theme inline {
@@ -23,21 +29,33 @@ body {
   font-family: var(--sans);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-/* FILM GRAIN OVERLAY */
+/* 
+   HIGH-QUALITY FILM GRAIN / DITHER 
+   This masks color banding in dark gradients.
+*/
 .film-grain {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
   pointer-events: none;
   z-index: 100;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  /* opacity: 0.05; */
+  /* background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); */
+  /* animation: grain-shift 0.8s steps(6) infinite; */
 }
+
+/* @keyframes grain-shift {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-1%, -2%); }
+  30% { transform: translate(2%, 1%); }
+  50% { transform: translate(-2%, 3%); }
+  70% { transform: translate(3%, -1%); }
+  90% { transform: translate(-1%, 1%); }
+} */
 
 /* TYPOGRAPHY */
 .narrative-serif {
@@ -55,57 +73,20 @@ body {
   opacity: 0.6;
 }
 
-/* LIQUID LIGHT EFFECT */
+/* GOLD & LIGHT EFFECTS */
+.gold-text {
+  background: linear-gradient(to bottom, #f2ede4 0%, var(--gold-leaf) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 12px rgba(197, 160, 40, 0.2));
+}
+
 .glow-text-container {
   position: relative;
   display: inline-block;
 }
 
-.liquid-light {
-  position: relative;
-  color: transparent;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.1) 20%,
-    rgba(255, 255, 255, 0.8) 50%,
-    #a68b5c 55%,
-    rgba(64, 255, 200, 0.4) 60%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  background-size: 200% auto;
-  background-clip: text;
-  -webkit-background-clip: text;
-  animation: shine 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  z-index: 2;
-  filter: drop-shadow(0 0 2px rgba(255,255,255,0.3));
-}
-
-/* MYTHIC THEME TOKENS */
-:root {
-  --ivory: #e8e4d8; /* Muted from #f2f0e4 */
-  --gold-leaf: #c5a028; /* Slightly deeper gold */
-  --deep-azure: #080d14;
-  --marble-gray: #151516;
-}
-
-.gold-border {
-  border: 1px solid rgba(197, 160, 40, 0.15);
-}
-
-.gold-text {
-  background: linear-gradient(to bottom, #d8d4c7 0%, #c5a028 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 8px rgba(197, 160, 40, 0.15));
-}
-
-.temple-shadow {
-  box-shadow: 0 40px 80px -15px rgba(0,0,0,0.6), 0 20px 40px -25px rgba(0,0,0,0.4);
-}
-
-/* DIVINE BLOOM FOR GODLY REVEAL */
 .liquid-light {
   position: relative;
   color: transparent;
@@ -124,11 +105,9 @@ body {
   -webkit-background-clip: text;
   animation: shine 15s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   z-index: 2;
-  /* Layered Bloom Effect */
   filter: 
-    drop-shadow(0 0 5px rgba(197, 160, 40, 0.5))
-    drop-shadow(0 0 15px rgba(212, 175, 55, 0.3))
-    drop-shadow(0 0 40px rgba(197, 160, 40, 0.1));
+    drop-shadow(0 0 5px rgba(197, 160, 40, 0.4))
+    drop-shadow(0 0 20px rgba(197, 160, 40, 0.1));
 }
 
 .volumetric-glow {
@@ -140,9 +119,9 @@ body {
   height: 150%;
   background: radial-gradient(
     circle at center,
-    rgba(197, 160, 40, 0.15) 0%,
-    rgba(197, 160, 40, 0.05) 30%,
-    rgba(8, 13, 20, 0) 70%
+    rgba(197, 160, 40, 0.12) 0%,
+    rgba(197, 160, 40, 0.04) 30%,
+    transparent 70%
   );
   filter: blur(120px);
   opacity: 0.6;
@@ -161,7 +140,15 @@ body {
   100% { background-position: 100% center; }
 }
 
-/* TRANSITIONS */
+/* LAYOUT HELPERS */
+.gold-border {
+  border: 1px solid rgba(197, 160, 40, 0.15);
+}
+
+.temple-shadow {
+  box-shadow: 0 40px 80px -15px rgba(0,0,0,0.6), 0 20px 40px -25px rgba(0,0,0,0.4);
+}
+
 .fade-in {
   animation: fadeIn 3s ease forwards;
 }
