@@ -17,8 +17,7 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-background">
-      {/* SOUNDTRACK PLAYER - Always mounted to attempt early audio */}
-      <Soundtrack isStarted={true} />
+      <Soundtrack />
 
       <AnimatePresence mode="wait">
         {!started ? (
