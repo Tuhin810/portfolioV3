@@ -10,6 +10,40 @@ interface WorkBackgroundProps {
     progress: MotionValue<number>;
 }
 
+const EmbeddedWorkImage = ({ work, index, total, progress }: { work: any, index: number, total: number, progress: MotionValue<number> }) => {
+    const start = index / total;
+    const end = (index + 1) / total;
+
+    const opacity = useTransform(
+        progress,
+        [start, start + 0.1, end - 0.1, end],
+        [0, 1, 1, 0]
+    );
+
+    const interiorScale = useTransform(
+        progress,
+        [start, end],
+        [1.25, 1.1]
+    );
+
+    return (
+        <motion.div
+            style={{ opacity }}
+            className="absolute inset-0"
+        >
+            <motion.div style={{ scale: interiorScale }} className="w-full h-full">
+                <Image
+                    src={work.image}
+                    alt={work.title}
+                    fill
+                    className="object-cover brightness-[0.5]"
+                />
+            </motion.div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-black via-transparent to-transparent opacity-60" />
+        </motion.div>
+    );
+};
+
 export const WorkBackground = ({ rotateSlow, rotateFast, progress }: WorkBackgroundProps) => {
     return (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden z-0">
@@ -39,40 +73,15 @@ export const WorkBackground = ({ rotateSlow, rotateFast, progress }: WorkBackgro
                 {/* The "Metal Circle" Container */}
                 <div className="absolute inset-0 z-0 rounded-full overflow-hidden border border-[#cda56e]/40 p-1.5 bg-black/40 backdrop-blur-md">
                     <div className="w-full h-full rounded-full overflow-hidden relative border border-white/10 shadow-[inner_0_0_100px_rgba(0,0,0,0.9)]">
-                        {WORKS.map((work, index) => {
-                            const start = index / WORKS.length;
-                            const end = (index + 1) / WORKS.length;
-
-                            const opacity = useTransform(
-                                progress,
-                                [start, start + 0.1, end - 0.1, end],
-                                [0, 1, 1, 0]
-                            );
-
-                            const interiorScale = useTransform(
-                                progress,
-                                [start, end],
-                                [1.25, 1.1]
-                            );
-
-                            return (
-                                <motion.div
-                                    key={work.id}
-                                    style={{ opacity }}
-                                    className="absolute inset-0"
-                                >
-                                    <motion.div style={{ scale: interiorScale }} className="w-full h-full">
-                                        <Image
-                                            src={work.image}
-                                            alt={work.title}
-                                            fill
-                                            className="object-cover  brightness-[0.5]"
-                                        />
-                                    </motion.div>
-                                    <div className="absolute inset-0 bg-gradient-to-tr from-black via-transparent to-transparent opacity-60" />
-                                </motion.div>
-                            );
-                        })}
+                        {WORKS.map((work, index) => (
+                            <EmbeddedWorkImage
+                                key={work.id}
+                                work={work}
+                                index={index}
+                                total={WORKS.length}
+                                progress={progress}
+                            />
+                        ))}
                     </div>
                 </div>
 
