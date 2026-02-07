@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -6,7 +6,8 @@
   --foreground: #f2ede4d6;
   --accent: #a68b5c;
   --serif: 'Playfair Display', 'Libre Baskerville', serif;
-  --sans: var(--font-inter), sans-serif;
+  --sans: 'Montserrat', var(--font-inter), sans-serif;
+  --display: 'Bebas Neue', cursive;
   
   /* Mythic Palette */
   --ivory: #e8e4d8;
@@ -21,6 +22,7 @@
   --color-accent: var(--accent);
   --font-serif: var(--serif);
   --font-sans: var(--sans);
+  --font-display: var(--display);
 }
 
 body {

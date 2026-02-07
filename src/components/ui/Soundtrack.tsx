@@ -1,29 +1,86 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 
 const TRACKS = [
-    { id: 1, title: "Sacred Silence", duration: "4:22", artist: "The Architect" },
-    { id: 2, title: "Echoes of Olympus", duration: "3:45", artist: "Homer's Ghost" },
-    { id: 3, title: "Digital Odyssey", duration: "5:12", artist: "Cyber Oracle" },
-    { id: 4, title: "The Forge Ritual", duration: "2:58", artist: "Hephaestus" },
+    {
+        id: 1,
+        title: "Sacred Silence",
+        duration: "3:14",
+        artist: "The Architect",
+        url: "/intro.mp3"
+    },
+    { id: 2, title: "Echoes of Olympus", duration: "3:45", artist: "Homer's Ghost", url: "" },
+    { id: 3, title: "Digital Odyssey", duration: "5:12", artist: "Cyber Oracle", url: "" },
+    { id: 4, title: "The Forge Ritual", duration: "2:58", artist: "Hephaestus", url: "" },
 ];
 
 export const Soundtrack: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [currentTrack, setCurrentTrack] = useState(TRACKS[0]);
     const [isPlaying, setIsPlaying] = useState(false);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
 
     const { scrollYProgress } = useScroll();
 
-    // Hide initially, show as we scroll away from the landing (Arrival) section
+    // Hide initially on the first few percent of scroll (Arrival section), then show
+    // We want it hidden during the very top of Arrival, but it can be visible during Prologue if we want
+    // But since it's "fixed", it will show over Prologue. Let's make it invisible during the first scroll progress.
     const opacity = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
     const scale = useTransform(scrollYProgress, [0, 0.1], [0.8, 1]);
     const pointerEvents = useTransform(scrollYProgress, (p) => p > 0.05 ? "auto" : "none") as any;
 
+    // AUDIO LOGIC
+    useEffect(() => {
+        // Attempt to start music immediately on mount (Prologue)
+        if (audioRef.current) {
+            audioRef.current.volume = 0.5;
+
+            // Note: Browsers usually block this without interaction.
+            // But we will try anyway as requested.
+            const playPromise = audioRef.current.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    setIsPlaying(true);
+                }).catch(e => {
+                    console.log("Autoplay blocked. Waiting for first interaction or scroll.", e);
+
+                    // Fallback: Try to play on first click anywhere on the document
+                    const startOnInteraction = () => {
+                        if (audioRef.current) {
+                            audioRef.current.play();
+                            setIsPlaying(true);
+                            document.removeEventListener('click', startOnInteraction);
+                            document.removeEventListener('scroll', startOnInteraction);
+                        }
+                    };
+                    document.addEventListener('click', startOnInteraction);
+                    document.addEventListener('scroll', startOnInteraction);
+                });
+            }
+        }
+    }, []);
+
+    const togglePlay = () => {
+        if (audioRef.current) {
+            if (isPlaying) {
+                audioRef.current.pause();
+            } else {
+                audioRef.current.play();
+            }
+            setIsPlaying(!isPlaying);
+        }
+    };
+
     return (
         <motion.div style={{ opacity, scale, pointerEvents }} className="fixed bottom-[-15px] right-[-15px] z-[300]">
+            <audio
+                ref={audioRef}
+                src={currentTrack.url}
+                loop
+            />
             {/* THE PHOTOGRAPHIC REALISTIC VINYL INTERFACE */}
             <div className="relative pointer-events-none">
                 <div className="relative w-64 h-64 lg:w-72 lg:h-72 pointer-events-none">
@@ -40,12 +97,6 @@ export const Soundtrack: React.FC = () => {
                     >
                         {/* Physical Reflection Layer */}
                         <div className="absolute inset-0 rounded-full">
-                            {/* Anisotropic highlights (The classic 'X' light reflection) */}
-                            {/* <div className="absolute inset-0 bg-[conic-gradient(from_0deg,transparent_0deg,rgba(255,255,255,0.06)_45deg,transparent_90deg,rgba(255,255,255,0.06)_160deg,transparent_220deg,rgba(255,255,255,0.06)_300deg,transparent_360deg)] opacity-70 group-hover:opacity-90 transition-opacity" /> */}
-
-                            {/* Subtle sheen layer */}
-                            {/* <div className="absolute inset-0 bg-[conic-gradient(from_90deg,transparent_0deg,rgba(255,255,255,0.03)_120deg,transparent_240deg)] opacity-40" /> */}
-
                             {/* Dense Micro-Grooves */}
                             {[...Array(30)].map((_, i) => (
                                 <div
@@ -54,9 +105,6 @@ export const Soundtrack: React.FC = () => {
                                     style={{ margin: `${i * 1.5}%` }}
                                 />
                             ))}
-
-                            {/* Inner Depth Polish */}
-                            {/* <div className="absolute inset-0 rounded-full shadow-[inset_0_0_60px_rgba(0,0,0,1)]" /> */}
                         </div>
 
                         {/* Center Label (Deep Photographic Red) */}
@@ -77,15 +125,6 @@ export const Soundtrack: React.FC = () => {
                         {/* Paper Texture Overlay */}
                         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.06] mix-blend-overlay" />
                         <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
-
-                        {/* Sleeve Labeling / Artwork */}
-                        <div className="absolute inset-0 p-4 flex flex-col items-center justify-center opacity-40">
-                            {/* <img
-                                src="/ob2.png"
-                                alt="Sleeve Art"
-                                className="w-full h-full object-cover rounded-md grayscale hover:grayscale-0 transition-all duration-1000"
-                            /> */}
-                        </div>
 
                         {/* Status Light */}
                         <div className="absolute bottom-16 right-16 flex items-center gap-4 opacity-30">
@@ -171,7 +210,7 @@ export const Soundtrack: React.FC = () => {
                                         <motion.button
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
-                                            onClick={() => setIsPlaying(!isPlaying)}
+                                            onClick={togglePlay}
                                             className="w-28 h-28 rounded-full bg-gold-leaf flex items-center justify-center text-black shadow-[0_30px_60px_rgba(212,175,55,0.2)] transition-all"
                                         >
                                             {isPlaying ?

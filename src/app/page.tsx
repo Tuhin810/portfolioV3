@@ -17,6 +17,9 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-background">
+      {/* SOUNDTRACK PLAYER - Always mounted to attempt early audio */}
+      <Soundtrack isStarted={true} />
+
       <AnimatePresence mode="wait">
         {!started ? (
           <Prologue onEnter={() => setStarted(true)} />
@@ -35,7 +38,7 @@ export default function Home() {
             <Trials />
 
             {/* Stage IV: THE DISCIPLINE */}
-            {/* <Studio /> */}
+            <Studio />
 
             {/* Stage V: THE ODYSSEY */}
             <Odyssey />
@@ -45,9 +48,6 @@ export default function Home() {
 
             {/* Stage VII: THE OFFERING */}
             <Offering />
-
-            {/* SOUNDTRACK PLAYER */}
-            <Soundtrack />
 
             {/* FINAL NARRATIVE SPACER */}
             <div className="h-[20vh]" />
