@@ -10,6 +10,7 @@ import { About } from "@/components/sections/About";
 import { Trials } from "@/components/sections/Trials";
 import { Odyssey } from "@/components/sections/Odyssey";
 import { Offering } from "@/components/sections/Offering";
+import { Footer } from "@/components/sections/Footer";
 import WorkPage from "@/components/sections/Work";
 import { Images } from "@/components/sections/Images";
 
@@ -47,8 +48,8 @@ export default function Home() {
               {/* Stage V: THE ODYSSEY */}
               <Odyssey />
 
-              {/* FINAL NARRATIVE SPACER */}
-              <div className="h-[20vh]" />
+              {/* FINAL NARRATIVE FOOTER */}
+              <Footer onContact={() => setIsOfferingOpen(true)} />
             </motion.div>
 
             {/* MODAL SYSTEM */}
