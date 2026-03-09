@@ -3,18 +3,18 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { EditorialSidebar } from "@/components/shared/EditorialSidebar";
-import { WorkView } from "@/components/views/WorkView";
+import { AboutView } from "@/components/views/AboutView";
+import { SkillsView } from "@/components/views/SkillsView";
 import { ExperienceView } from "@/components/views/ExperienceView";
-import { ProjectsView } from "@/components/views/ProjectsView";
 
-type ViewState = "default" | "work" | "experience" | "projects";
+type ViewState = "default" | "about" | "skills" | "experience";
 
 const PORTALS = [
     {
         id: "I",
-        label: "The Forge",
-        title: "Work",
-        view: "work" as ViewState,
+        label: "The Origin",
+        title: "About Me",
+        view: "about" as ViewState,
         cover: "/gate1.png",
         x: "15%",
         y: "85%",
@@ -22,13 +22,13 @@ const PORTALS = [
         max_w: "max-w-[210px]",
         h: "aspect-[2/3]",
         origin: "15% 80%",
-        Component: WorkView
+        Component: AboutView
     },
     {
         id: "II",
-        label: "The Odyssey",
-        title: "Experience",
-        view: "experience" as ViewState,
+        label: "The Armory",
+        title: "Skills",
+        view: "skills" as ViewState,
         cover: "/gate2.png",
         x: "42%",
         y: "85%",
@@ -36,13 +36,13 @@ const PORTALS = [
         max_w: "max-w-[280px]",
         h: "aspect-[2/3]",
         origin: "42% 80%",
-        Component: ExperienceView
+        Component: SkillsView
     },
     {
         id: "III",
-        label: "The Trials",
-        title: "Projects",
-        view: "projects" as ViewState,
+        label: "The Odyssey",
+        title: "Experience",
+        view: "experience" as ViewState,
         cover: "/gate3.png",
         x: "75%",
         y: "85%",
@@ -50,7 +50,7 @@ const PORTALS = [
         max_w: "max-w-[360px]",
         h: "aspect-[2/3]",
         origin: "75% 80%",
-        Component: ProjectsView
+        Component: ExperienceView
     },
 ];
 
@@ -200,9 +200,9 @@ export const Trials: React.FC = () => {
                                 transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                                 className="w-full h-full"
                             >
-                                {view === "work" && <WorkView onBack={() => setView("default")} />}
+                                {view === "about" && <AboutView onBack={() => setView("default")} />}
+                                {view === "skills" && <SkillsView onBack={() => setView("default")} />}
                                 {view === "experience" && <ExperienceView onBack={() => setView("default")} />}
-                                {view === "projects" && <ProjectsView onBack={() => setView("default")} />}
                             </motion.div>
                         </AnimatePresence>
                     </div>

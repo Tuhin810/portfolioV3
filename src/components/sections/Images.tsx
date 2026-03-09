@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-export const Images = () => {
+export const Images = ({title}: {title: string}) => {
     return (
         <section className="relative min-h-screen flex items-center justify-center bg-background overflow-hidden py-16 md:py-16">
             {/* Outer Border Container */}
@@ -86,7 +86,7 @@ export const Images = () => {
                             filter: 'drop-shadow(0 0 30px rgba(166, 139, 92, 0.4))'
                         }}
                     >
-                        Odyssey
+                        {title || "Odyssey"}
                     </motion.h2>
 
 

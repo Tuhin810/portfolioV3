@@ -43,7 +43,7 @@ export default function Home() {
 
               <WorkPage />
 
-              <Images />
+              <Images title="Odessy"/>
 
               {/* Stage V: THE ODYSSEY */}
               <Odyssey />
