@@ -1,112 +1,57 @@
 "use client";
 
-import { motion, MotionValue, useTransform } from "framer-motion";
-import { WORKS } from "./WorkData";
+import React, { useState } from "react";
+import { AnimatePresence, motion, MotionValue, useMotionValueEvent } from "framer-motion";
 import Image from "next/image";
+import { WORKS } from "./WorkData";
 
 interface WorkBackgroundProps {
-    rotateSlow: MotionValue<number>;
-    rotateFast: MotionValue<number>;
     progress: MotionValue<number>;
 }
 
-const EmbeddedWorkImage = ({ work, index, total, progress }: { work: any, index: number, total: number, progress: MotionValue<number> }) => {
-    const start = index / total;
-    const end = (index + 1) / total;
+export const WorkBackground = ({ progress }: WorkBackgroundProps) => {
+    const [active, setActive] = useState(0);
 
-    const opacity = useTransform(
-        progress,
-        [start, start + 0.1, end - 0.1, end],
-        [0, 1, 1, 0]
-    );
-
-    const interiorScale = useTransform(
-        progress,
-        [start, end],
-        [1.25, 1.1]
-    );
+    // Which project is on screen — the rock re-enters whenever this changes
+    useMotionValueEvent(progress, "change", (v) => {
+        const i = Math.min(WORKS.length - 1, Math.max(0, Math.floor(v * WORKS.length)));
+        setActive((prev) => (prev === i ? prev : i));
+    });
 
     return (
-        <motion.div
-            style={{ opacity }}
-            className="absolute inset-0"
-        >
-            <motion.div style={{ scale: interiorScale }} className="w-full h-full">
-                <Image
-                    src={work.image}
-                    alt={work.title}
-                    fill
-                    className="object-cover brightness-[0.5]"
-                />
-            </motion.div>
-            <div className="absolute inset-0 bg-gradient-to-tr from-black via-transparent to-transparent opacity-60" />
-        </motion.div>
-    );
-};
+        <div className="absolute inset-0 flex items-center justify-start pl-[4vw] lg:pl-[8vw] pointer-events-none select-none overflow-hidden z-0">
+            {/* Horizon axis */}
+            <div className="absolute top-1/2 -translate-y-1/2 w-[95vw] h-px opacity-20 bg-gradient-to-r from-transparent via-[#cda56e] to-transparent" />
 
-export const WorkBackground = ({ rotateSlow, rotateFast, progress }: WorkBackgroundProps) => {
-    return (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden z-0">
-            {/* 1. Horizontal Horizon Axis */}
-            <div className="absolute w-[95vw] h-[1px] flex items-center justify-center top-1/2 -translate-y-1/2">
-                <motion.div
-                    initial={{ scaleX: 0, opacity: 0 }}
-                    whileInView={{ scaleX: 1, opacity: 0.17 }}
-                    transition={{ duration: 2, ease: "circOut" }}
-                    className="w-full h-full bg-gradient-to-r from-transparent via-[#cda56e] to-transparent"
-                />
-            </div>
-
-            {/* 2. Symmetrical Lateral Full Circles */}
-            <div className="absolute inset-0 flex items-center justify-between px-[2%] md:px-[5%] opacity-[0.2]">
-                <div className="relative w-[25vw] h-[25vw] max-w-[350px] max-h-[350px] flex items-center justify-center">
-                    <motion.div style={{ rotate: rotateSlow }} className="absolute inset-0 border border-[#cda56e] rounded-full" />
-                </div>
-                <div className="relative w-[25vw] h-[25vw] max-w-[350px] max-h-[350px] flex items-center justify-center">
-                    <motion.div style={{ rotate: rotateFast }} className="absolute inset-0 border border-[#cda56e] rounded-full" />
-                </div>
-            </div>
-
-            {/* 3. CENTRAL ARCHAEOLOGICAL FOCAL POINT (The Embedded Image Host) */}
-            <div className="relative w-[85vw] h-[85vw] max-w-[620px] max-h-[620px] flex items-center justify-center">
-
-                {/* The "Metal Circle" Container */}
-                <div className="absolute inset-0 z-0 rounded-full overflow-hidden border border-[#cda56e]/40 p-1.5 bg-black/40 backdrop-blur-md">
-                    <div className="w-full h-full rounded-full overflow-hidden relative border border-white/10 shadow-[inner_0_0_100px_rgba(0,0,0,0.9)]">
-                        {WORKS.map((work, index) => (
-                            <EmbeddedWorkImage
-                                key={work.id}
-                                work={work}
-                                index={index}
-                                total={WORKS.length}
-                                progress={progress}
-                            />
-                        ))}
-                    </div>
-                </div>
-
-                {/* Rotating Geometrical Rings (Layered OVER the images) */}
-                <motion.div
-                    style={{ rotate: rotateSlow }}
-                    className="absolute -inset-10 border border-[#cda56e]/20 rounded-full flex items-center justify-center z-10 opacity-[0.4]"
-                >
-                    {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
-                        <div
-                            key={angle}
-                            className="absolute w-2 h-2 rounded-full border border-[#cda56e] bg-black"
-                            style={{
-                                top: "50%",
-                                left: "50%",
-                                transform: `rotate(${angle}deg) translate(335px) rotate(-${angle}deg) translate(-50%, -50%)`,
-                            }}
+            {/* THE ROCK — rises again on every project */}
+            <div className="relative">
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={active}
+                        initial={{ opacity: 0, y: 70, scale: 0.94 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -40, scale: 0.97 }}
+                        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                        className="relative w-[46vw] max-w-[720px] aspect-square"
+                    >
+                        <Image
+                            src="/stome.png"
+                            alt=""
+                            fill
+                            sizes="760px"
+                            className="object-contain drop-shadow-[0_40px_70px_rgba(0,0,0,0.85)]"
                         />
-                    ))}
-                </motion.div>
+                    </motion.div>
+                </AnimatePresence>
 
-                {/* Outer Orbitals */}
+                {/* Contact shadow, arriving with it */}
                 <motion.div
-                    style={{ rotate: rotateFast }}
-                    className="absolute -inset-24 border border-[#cda56e]/5 rounded-full border-dashed opacity-20 z-10"
+                    key={`shadow-${active}`}
+                    aria-hidden
+                    initial={{ opacity: 0, scaleX: 0.7 }}
+                    animate={{ opacity: 0.7, scaleX: 1 }}
+                    transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                    className="absolute left-1/2 -translate-x-1/2 bottom-[6%] w-[46%] h-8 rounded-[50%] bg-black blur-2xl"
                 />
             </div>
         </div>

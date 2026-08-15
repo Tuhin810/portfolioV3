@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import {
     motion,
@@ -8,6 +8,7 @@ import {
     useSpring,
     useTransform,
     useMotionTemplate,
+    useInView,
 } from "framer-motion";
 
 // Same stack the Skills view catalogues, grouped into three marquee rows
@@ -20,25 +21,36 @@ const ROWS = [
 const DIRECTIONS = [-1, 1, -1] as const;
 const DURATIONS = [38, 46, 42];
 
-const Marquee: React.FC<{ items: string[]; direction: number; duration: number; phase: number }> = ({
-    items,
-    direction,
-    duration,
-    phase,
-}) => {
+const Marquee: React.FC<{
+    items: string[];
+    direction: number;
+    duration: number;
+    phase: number;
+    started: boolean;
+    index: number;
+}> = ({ items, direction, duration, phase, started, index }) => {
     // Two identical halves, translated by exactly 50% — the seam never shows
     const doubled = [...items, ...items];
 
     return (
         <motion.div
             // The line itself rides the wave — a slow rock plus a vertical swell
-            animate={{ y: [0, -22, 0, 22, 0], rotate: [0, -1.6, 0, 1.6, 0] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: phase }}
+            initial={{ opacity: 0 }}
+            animate={
+                started
+                    ? { opacity: 1, y: [0, -22, 0, 22, 0], rotate: [0, -1.6, 0, 1.6, 0] }
+                    : { opacity: 0 }
+            }
+            transition={{
+                opacity: { duration: 1.2, delay: index * 0.25, ease: "easeOut" },
+                y: { duration: 12, repeat: Infinity, ease: "easeInOut", delay: phase },
+                rotate: { duration: 12, repeat: Infinity, ease: "easeInOut", delay: phase },
+            }}
             className="flex overflow-hidden py-6">
             <motion.div
                 className="flex shrink-0 items-center gap-10 pr-10"
-                animate={{ x: direction < 0 ? ["0%", "-50%"] : ["-50%", "0%"] }}
-                transition={{ duration, repeat: Infinity, ease: "linear" }}
+                animate={started ? { x: direction < 0 ? ["0%", "-50%"] : ["-50%", "0%"] } : {}}
+                transition={{ duration, repeat: Infinity, ease: "linear", delay: index * 0.25 }}
                 style={{ width: "200%" }}
             >
                 {doubled.map((item, i) => (
@@ -56,6 +68,15 @@ const Marquee: React.FC<{ items: string[]; direction: number; duration: number; 
 
 export const Studio: React.FC = () => {
     const sectionRef = useRef<HTMLElement>(null);
+    const inView = useInView(sectionRef, { once: true, amount: 0.4 });
+
+    // The rows hold until the face has landed
+    const [textStarted, setTextStarted] = useState(false);
+    useEffect(() => {
+        if (!inView) return;
+        const t = setTimeout(() => setTextStarted(true), 1500);
+        return () => clearTimeout(t);
+    }, [inView]);
 
     // Pointer-driven 3D tilt, same treatment as the hero relic
     const pointerX = useMotionValue(0);
@@ -85,7 +106,7 @@ export const Studio: React.FC = () => {
             ref={sectionRef}
             onPointerMove={handlePointerMove}
             onPointerLeave={handlePointerLeave}
-            className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-t from-[#111111]/80 to-[#010000] py-32"
+            className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-t from-[#111111]/10 to-[#010000] pt-56 pb-32"
         >
             {/* MARQUEE ROWS — behind the face */}
             <div className="relative z-0 w-full flex flex-col gap-10 lg:gap-16">
@@ -93,9 +114,11 @@ export const Studio: React.FC = () => {
                     <Marquee
                         key={i}
                         items={items}
+                        index={i}
                         direction={DIRECTIONS[i]}
                         duration={DURATIONS[i]}
                         phase={i * 1.6}
+                        started={textStarted}
                     />
                 ))}
             </div>
@@ -108,7 +131,8 @@ export const Studio: React.FC = () => {
             <motion.div
                 aria-hidden
                 style={{ x: shiftX, y: shiftY }}
-                animate={{ scale: [1, 0.94, 1], opacity: [1, 0.85, 1] }}
+                initial={{ opacity: 0 }}
+                animate={inView ? { opacity: [0, 1, 0.85, 1], scale: [0.9, 1, 0.94, 1] } : { opacity: 0 }}
                 transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
                 className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[8] w-[52vw] max-w-[720px] aspect-square rounded-full blur-3xl bg-[radial-gradient(circle,rgba(0,0,0,0.92)_0%,rgba(0,0,0,0.6)_45%,transparent_72%)]"
             />
@@ -116,10 +140,9 @@ export const Studio: React.FC = () => {
             {/* FACE — centered, uncropped, 3D tilt */}
             <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.94 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+                    initial={{ opacity: 0, scale: 0.9, y: 40 }}
+                    animate={inView ? { opacity: 1, scale: 1, y: 0 } : {}}
+                    transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                     style={{ perspective: 1200 }}
                     className="select-none"
                 >

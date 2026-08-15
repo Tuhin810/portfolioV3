@@ -40,7 +40,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${playfair.variable} ${bebas.variable} ${syne.variable} font-sans antialiased bg-background text-foreground min-h-screen selection:bg-accent/30`}
       >
-        <Soundtrack />
+        {/* <Soundtrack /> */}
         <div className="film-grain" />
         <main className="relative z-10 w-full">
           {children}

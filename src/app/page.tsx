@@ -36,7 +36,7 @@ export default function Home() {
               <Arrival onHit={() => setIsOfferingOpen(true)} />
 
               {/* Stage III: THE FORGE */}
-              <Trials />
+              {/* <Trials /> */}
 
               {/* Stage IV: THE DISCIPLINE */}
               <Studio />
