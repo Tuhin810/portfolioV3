@@ -72,7 +72,7 @@ export const Trials: React.FC = () => {
     const activePortal = PORTALS.find(p => p.id === zoomingPortal);
 
     return (
-        <section className="relative bg-[#0d0c0b] text-[#d4cdbc] min-h-screen overflow-hidden border-y border-white/5 font-serif select-none">
+        <section className="relative bg-[#111111] text-[#d4cdbc] min-h-screen overflow-hidden border-y border-white/5 font-serif select-none">
 
             <AnimatePresence mode="wait">
                 {view === "default" ? (

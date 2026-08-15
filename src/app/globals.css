@@ -2,13 +2,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #060606;
+  --background: #181616;
   --foreground: #f2ede4d6;
   --accent: #a68b5c;
   --serif: 'Playfair Display', 'Libre Baskerville', serif;
   --sans: 'Montserrat', var(--font-inter), sans-serif;
   --display: var(--font-bebas), 'Bebas Neue', cursive;
-  
+
   /* Mythic Palette */
   --ivory: #e8e4d8;
   --gold-leaf: #c5a028;
@@ -92,24 +92,21 @@ body {
 .liquid-light {
   position: relative;
   color: transparent;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.2) 20%,
-    var(--ivory) 48%,
-    var(--gold-leaf) 52%,
-    var(--ivory) 56%,
-    rgba(255, 255, 255, 0.1) 80%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.2) 20%,
+      var(--ivory) 48%,
+      var(--gold-leaf) 52%,
+      var(--ivory) 56%,
+      rgba(255, 255, 255, 0.1) 80%,
+      rgba(255, 255, 255, 0) 100%);
   background-size: 200% auto;
   background-clip: text;
   -webkit-background-clip: text;
   animation: shine 15s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   z-index: 2;
-  filter: 
-    drop-shadow(0 0 5px rgba(197, 160, 40, 0.4))
-    drop-shadow(0 0 20px rgba(197, 160, 40, 0.1));
+  filter:
+    drop-shadow(0 0 5px rgba(197, 160, 40, 0.4)) drop-shadow(0 0 20px rgba(197, 160, 40, 0.1));
 }
 
 .volumetric-glow {
@@ -119,12 +116,10 @@ body {
   transform: translate(-50%, -50%);
   width: 150%;
   height: 150%;
-  background: radial-gradient(
-    circle at center,
-    rgba(197, 160, 40, 0.12) 0%,
-    rgba(197, 160, 40, 0.04) 30%,
-    transparent 70%
-  );
+  background: radial-gradient(circle at center,
+      rgba(197, 160, 40, 0.12) 0%,
+      rgba(197, 160, 40, 0.04) 30%,
+      transparent 70%);
   filter: blur(120px);
   opacity: 0.6;
   animation: pulse-glow 12s ease-in-out infinite;
@@ -133,13 +128,27 @@ body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.1); }
+
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
 }
 
 @keyframes shine {
-  0% { background-position: -100% center; }
-  100% { background-position: 100% center; }
+  0% {
+    background-position: -100% center;
+  }
+
+  100% {
+    background-position: 100% center;
+  }
 }
 
 /* LAYOUT HELPERS */
@@ -148,7 +157,7 @@ body {
 }
 
 .temple-shadow {
-  box-shadow: 0 40px 80px -15px rgba(0,0,0,0.6), 0 20px 40px -25px rgba(0,0,0,0.4);
+  box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.6), 0 20px 40px -25px rgba(0, 0, 0, 0.4);
 }
 
 .fade-in {
@@ -156,8 +165,15 @@ body {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 ::selection {
