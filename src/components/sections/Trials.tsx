@@ -11,15 +11,15 @@ import { ExperienceView } from "@/components/views/ExperienceView";
 type ViewState = "default" | "about" | "skills" | "experience";
 
 const PORTALS = [
-    // {
-    //     id: "I",
-    //     label: "The Origin",
-    //     title: "About Me",
-    //     view: "about" as ViewState,
-    //     cover: "/gate1.png",
-    //     origin: "20% 70%",
-    //     size: "w-[20vw] max-w-[260px]",
-    // },
+    {
+        id: "I",
+        label: "The Origin",
+        title: "About Me",
+        view: "about" as ViewState,
+        cover: "/gate1.png",
+        origin: "20% 70%",
+        size: "w-[20vw] max-w-[260px]",
+    },
     {
         id: "II",
         label: "The Armory",
@@ -89,17 +89,7 @@ export const Trials: React.FC = () => {
                         style={{ transformOrigin: activePortal?.origin ?? "50% 50%" }}
                     >
 
-                        {/* RIGHT: SIDEBAR */}
-                        <EditorialSidebar
-                            title="TRIALS"
-                            mainImage="/piller.png"
-                            topImage="/start.png"
-                            showMoon={false}
-                            showMoscowPill={true}
-                            rotation={0}
-                            layout="title-first"
-                            className=""
-                        />
+
                         {/* LEFT: THE GATES */}
                         <div className="flex-1 relative flex flex-col justify-between p-8 md:p-14 pb-0 md:pb-0 h-full border-l border-white/5">
 

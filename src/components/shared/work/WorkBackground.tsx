@@ -21,7 +21,6 @@ export const WorkBackground = ({ progress }: WorkBackgroundProps) => {
     return (
         <div className="absolute inset-0 flex items-center justify-start pl-[4vw] lg:pl-[8vw] pointer-events-none select-none overflow-hidden z-0">
             {/* Horizon axis */}
-            <div className="absolute top-1/2 -translate-y-1/2 w-[95vw] h-px opacity-20 bg-gradient-to-r from-transparent via-[#cda56e] to-transparent" />
 
             {/* THE ROCK — rises again on every project */}
             <div className="relative">

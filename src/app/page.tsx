@@ -36,20 +36,20 @@ export default function Home() {
               <Arrival onHit={() => setIsOfferingOpen(true)} />
 
               {/* Stage III: THE FORGE */}
-              {/* <Trials /> */}
+              <Trials />
 
               {/* Stage IV: THE DISCIPLINE */}
               <Studio />
 
-              <WorkPage />
+              {/* <WorkPage /> */}
 
-              {/* <Images title="Odessy"/> */}
+              {/* <Images title="Odessy" /> */}
 
               {/* Stage V: THE ODYSSEY */}
-              {/* <Odyssey /> */}
+              <Odyssey />
 
               {/* FINAL NARRATIVE FOOTER */}
-              <Footer onContact={() => setIsOfferingOpen(true)} />
+              {/* <Footer onContact={() => setIsOfferingOpen(true)} /> */}
             </motion.div>
 
             {/* MODAL SYSTEM */}

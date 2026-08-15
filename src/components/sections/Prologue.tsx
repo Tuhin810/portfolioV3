@@ -52,7 +52,7 @@ export const Prologue: React.FC<PrologueProps> = ({ onEnter }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 1.1, filter: "blur(20px)", transition: { duration: 2.5 } }}
-            className="flex flex-col items-center justify-center min-h-screen px-6 text-center bg-background overflow-hidden relative"
+            className="flex flex-col items-center justify-center min-h-screen px-6 text-center bg-gradient-to-br from-[#111] to-[#000]/10 overflow-hidden relative"
         >
 
             <img src="/mythic-logo.png" className="w-96 grayscale" alt="" />

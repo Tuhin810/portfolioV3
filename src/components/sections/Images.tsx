@@ -4,9 +4,13 @@ import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-export const Images = ({title}: {title: string}) => {
+export const Images = ({ title }: { title: string }) => {
     return (
         <section className="relative min-h-screen flex items-center justify-center bg-background overflow-hidden py-16 md:py-16">
+            {/* Edge fade, so words enter and leave rather than popping */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-32 lg:w-56 z-[5] bg-gradient-to-r from-[#010000] to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-32 lg:w-56 z-[5] bg-gradient-to-l from-[#010000] to-transparent" />
+
             {/* Outer Border Container */}
             <div className="relative w-full  aspect-[16/10] md:aspect-[16/9]  border-[#a68b5c]/30 rounded-[3rem] md:rounded-[5rem] overflow-hidden shadow-2xl">
 
