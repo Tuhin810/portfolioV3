@@ -20,18 +20,23 @@ const ROWS = [
 const DIRECTIONS = [-1, 1, -1] as const;
 const DURATIONS = [38, 46, 42];
 
-const Marquee: React.FC<{ items: string[]; direction: number; duration: number }> = ({
+const Marquee: React.FC<{ items: string[]; direction: number; duration: number; phase: number }> = ({
     items,
     direction,
     duration,
+    phase,
 }) => {
     // Two identical halves, translated by exactly 50% — the seam never shows
     const doubled = [...items, ...items];
 
     return (
-        <div className="flex overflow-hidden">
+        <motion.div
+            // The line itself rides the wave — a slow rock plus a vertical swell
+            animate={{ y: [0, -22, 0, 22, 0], rotate: [0, -1.6, 0, 1.6, 0] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: phase }}
+            className="flex overflow-hidden py-6">
             <motion.div
-                className="flex shrink-0 gap-6 pr-6"
+                className="flex shrink-0 items-center gap-10 pr-10"
                 animate={{ x: direction < 0 ? ["0%", "-50%"] : ["-50%", "0%"] }}
                 transition={{ duration, repeat: Infinity, ease: "linear" }}
                 style={{ width: "200%" }}
@@ -39,13 +44,13 @@ const Marquee: React.FC<{ items: string[]; direction: number; duration: number }
                 {doubled.map((item, i) => (
                     <span
                         key={`${item}-${i}`}
-                        className="whitespace-nowrap text-4xl lg:text-6xl tracking-tight text-white/25"
+                        className="whitespace-nowrap text-6xl lg:text-8xl tracking-tight text-white/25"
                     >
                         {item}
                     </span>
                 ))}
             </motion.div>
-        </div>
+        </motion.div>
     );
 };
 
@@ -90,6 +95,7 @@ export const Studio: React.FC = () => {
                         items={items}
                         direction={DIRECTIONS[i]}
                         duration={DURATIONS[i]}
+                        phase={i * 1.6}
                     />
                 ))}
             </div>
@@ -117,50 +123,50 @@ export const Studio: React.FC = () => {
                     style={{ perspective: 1200 }}
                     className="select-none"
                 >
-                  <motion.div
-                    animate={{ y: [0, -18, 0], rotate: [0, -1.2, 0] }}
-                    transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-                  >
                     <motion.div
-                        style={{
-                            rotateX: tiltX,
-                            rotateY: tiltY,
-                            x: shiftX,
-                            y: shiftY,
-                            transformStyle: "preserve-3d",
-                        }}
-                        animate={{ translateZ: [0, 24, 0] }}
-                        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-                        className="relative w-[42vw] max-w-[520px] aspect-[3/4]"
+                        animate={{ y: [0, -18, 0], rotate: [0, -1.2, 0] }}
+                        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
                     >
-                        <Image
-                            src="/face.png"
-                            alt=""
-                            fill
-                            priority={false}
-                            sizes="(max-width: 768px) 70vw, 520px"
-                            className="object-contain drop-shadow-[0_40px_80px_rgba(0,0,0,0.85)]"
-                        />
-
-                        {/* Specular sheen clipped to the silhouette */}
                         <motion.div
-                            aria-hidden
                             style={{
-                                translateZ: 1,
-                                background: sheen,
-                                WebkitMaskImage: "url(/face.png)",
-                                maskImage: "url(/face.png)",
-                                WebkitMaskSize: "contain",
-                                maskSize: "contain",
-                                WebkitMaskPosition: "center",
-                                maskPosition: "center",
-                                WebkitMaskRepeat: "no-repeat",
-                                maskRepeat: "no-repeat",
+                                rotateX: tiltX,
+                                rotateY: tiltY,
+                                x: shiftX,
+                                y: shiftY,
+                                transformStyle: "preserve-3d",
                             }}
-                            className="absolute inset-0 mix-blend-screen"
-                        />
+                            animate={{ translateZ: [0, 24, 0] }}
+                            transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+                            className="relative w-[42vw] max-w-[720px] aspect-[3/4]"
+                        >
+                            <Image
+                                src="/face.png"
+                                alt=""
+                                fill
+                                priority={false}
+                                sizes="(max-width: 868px) 70vw, 520px"
+                                className="object-contain drop-shadow-[0_40px_80px_rgba(0,0,0,0.85)]"
+                            />
+
+                            {/* Specular sheen clipped to the silhouette */}
+                            <motion.div
+                                aria-hidden
+                                style={{
+                                    translateZ: 1,
+                                    background: sheen,
+                                    WebkitMaskImage: "url(/face.png)",
+                                    maskImage: "url(/face.png)",
+                                    WebkitMaskSize: "contain",
+                                    maskSize: "contain",
+                                    WebkitMaskPosition: "center",
+                                    maskPosition: "center",
+                                    WebkitMaskRepeat: "no-repeat",
+                                    maskRepeat: "no-repeat",
+                                }}
+                                className="absolute inset-0 mix-blend-screen"
+                            />
+                        </motion.div>
                     </motion.div>
-                  </motion.div>
                 </motion.div>
             </div>
         </section>
