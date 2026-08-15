@@ -30,7 +30,16 @@ const getIconUrl = (slug: string) => {
     return mapping[slug] || `https://cdn.jsdelivr.net/npm/simple-icons@v14/icons/${slug}.svg`;
 };
 
-const MeanderRing = ({ radius, speed, reverse = false, color = "var(--gold-leaf)", opacity = 0.1, strokeWidth = 15 }) => {
+interface MeanderRingProps {
+    radius: number;
+    speed: number;
+    reverse?: boolean;
+    color?: string;
+    opacity?: number;
+    strokeWidth?: number;
+}
+
+const MeanderRing: React.FC<MeanderRingProps> = ({ radius, speed, reverse = false, color = "var(--gold-leaf)", opacity = 0.1, strokeWidth = 15 }) => {
     // Generate an accurate Greek Meander path for a circle
     // This is a simplified but visually effective pattern for SVG
     return (
