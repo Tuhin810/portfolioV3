@@ -39,9 +39,9 @@ export default function Home() {
               <Trials />
 
               {/* Stage IV: THE DISCIPLINE */}
-              {/* <Studio /> */}
+              <Studio />
 
-              {/* <WorkPage /> */}
+              <WorkPage />
 
               {/* <Images title="Odessy"/> */}
 

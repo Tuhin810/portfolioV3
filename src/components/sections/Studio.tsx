@@ -1,145 +1,167 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import Image from "next/image";
+import {
+    motion,
+    useMotionValue,
+    useSpring,
+    useTransform,
+    useMotionTemplate,
+} from "framer-motion";
+
+// Same stack the Skills view catalogues, grouped into three marquee rows
+const ROWS = [
+    ["React", "Next.js", "TypeScript", "JavaScript", "Tailwind", "Framer Motion", "GraphQL"],
+    ["Node.js", "Python", "Rust", "Solidity", "MongoDB", "PostgreSQL", "Redis"],
+    ["AWS", "Docker", "Terraform", "GitHub Actions", "WebGL", "Three.js", "Vercel"],
+];
+
+const DIRECTIONS = [-1, 1, -1] as const;
+const DURATIONS = [38, 46, 42];
+
+const Marquee: React.FC<{ items: string[]; direction: number; duration: number }> = ({
+    items,
+    direction,
+    duration,
+}) => {
+    // Two identical halves, translated by exactly 50% — the seam never shows
+    const doubled = [...items, ...items];
+
+    return (
+        <div className="flex overflow-hidden">
+            <motion.div
+                className="flex shrink-0 gap-6 pr-6"
+                animate={{ x: direction < 0 ? ["0%", "-50%"] : ["-50%", "0%"] }}
+                transition={{ duration, repeat: Infinity, ease: "linear" }}
+                style={{ width: "200%" }}
+            >
+                {doubled.map((item, i) => (
+                    <span
+                        key={`${item}-${i}`}
+                        className="whitespace-nowrap text-4xl lg:text-6xl tracking-tight text-white/25"
+                    >
+                        {item}
+                    </span>
+                ))}
+            </motion.div>
+        </div>
+    );
+};
 
 export const Studio: React.FC = () => {
+    const sectionRef = useRef<HTMLElement>(null);
+
+    // Pointer-driven 3D tilt, same treatment as the hero relic
+    const pointerX = useMotionValue(0);
+    const pointerY = useMotionValue(0);
+    const springCfg = { stiffness: 60, damping: 18, mass: 0.8 };
+    const tiltY = useSpring(useTransform(pointerX, [-0.5, 0.5], [-16, 16]), springCfg);
+    const tiltX = useSpring(useTransform(pointerY, [-0.5, 0.5], [11, -11]), springCfg);
+    const shiftX = useSpring(useTransform(pointerX, [-0.5, 0.5], [-18, 18]), springCfg);
+    const shiftY = useSpring(useTransform(pointerY, [-0.5, 0.5], [-12, 12]), springCfg);
+    const sheenX = useTransform(pointerX, [-0.5, 0.5], ["75%", "25%"]);
+    const sheenY = useTransform(pointerY, [-0.5, 0.5], ["70%", "30%"]);
+    const sheen = useMotionTemplate`radial-gradient(circle at ${sheenX} ${sheenY}, rgba(255,244,214,0.28) 0%, rgba(205,165,110,0.08) 35%, transparent 65%)`;
+
+    const handlePointerMove = (e: React.PointerEvent<HTMLElement>) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        pointerX.set((e.clientX - rect.left) / rect.width - 0.5);
+        pointerY.set((e.clientY - rect.top) / rect.height - 0.5);
+    };
+
+    const handlePointerLeave = () => {
+        pointerX.set(0);
+        pointerY.set(0);
+    };
+
     return (
-        <section className="min-h-screen bg-[#050505] relative flex items-center justify-center p-8 lg:p-24 overflow-hidden py-64">
-            {/* BACKGROUND VIDEO MASK CONTAINER */}
-            <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-                <video
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-full object-cover grayscale"
+        <section
+            ref={sectionRef}
+            onPointerMove={handlePointerMove}
+            onPointerLeave={handlePointerLeave}
+            className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-t from-[#111111]/80 to-[#010000] py-32"
+        >
+            {/* MARQUEE ROWS — behind the face */}
+            <div className="relative z-0 w-full flex flex-col gap-10 lg:gap-16">
+                {ROWS.map((items, i) => (
+                    <Marquee
+                        key={i}
+                        items={items}
+                        direction={DIRECTIONS[i]}
+                        duration={DURATIONS[i]}
+                    />
+                ))}
+            </div>
+
+            {/* Edge fade, so words enter and leave rather than popping */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-32 lg:w-56 z-[5] bg-gradient-to-r from-[#010000] to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-32 lg:w-56 z-[5] bg-gradient-to-l from-[#010000] to-transparent" />
+
+            {/* CONTACT SHADOW — darkens the words passing behind the face */}
+            <motion.div
+                aria-hidden
+                style={{ x: shiftX, y: shiftY }}
+                animate={{ scale: [1, 0.94, 1], opacity: [1, 0.85, 1] }}
+                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[8] w-[52vw] max-w-[720px] aspect-square rounded-full blur-3xl bg-[radial-gradient(circle,rgba(0,0,0,0.92)_0%,rgba(0,0,0,0.6)_45%,transparent_72%)]"
+            />
+
+            {/* FACE — centered, uncropped, 3D tilt */}
+            <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.94 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ perspective: 1200 }}
+                    className="select-none"
                 >
-                    <source src="https://assets.mixkit.co/videos/preview/mixkit-nebula-in-outer-space-3205-large.mp4" type="video/mp4" />
-                </video>
-            </div>
-
-            <div className="relative z-10 w-full max-w-[1400px]">
-                {/* TOP SECTION: TYPO STYLE */}
-                <div className="relative flex flex-col lg:flex-row items-center justify-between gap-12 mb-[-5vw]">
-                    {/* LEFT LABEL (01 BEBAS) */}
+                  <motion.div
+                    animate={{ y: [0, -18, 0], rotate: [0, -1.2, 0] }}
+                    transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                  >
                     <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 1.5, delay: 0.5 }}
-                        className="order-2 lg:order-1 self-start lg:mb-24"
+                        style={{
+                            rotateX: tiltX,
+                            rotateY: tiltY,
+                            x: shiftX,
+                            y: shiftY,
+                            transformStyle: "preserve-3d",
+                        }}
+                        animate={{ translateZ: [0, 24, 0] }}
+                        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+                        className="relative w-[42vw] max-w-[520px] aspect-[3/4]"
                     >
-                        <div className="flex flex-col gap-1">
-                            <span className="text-[10px] font-mono text-white/40 tracking-[0.4em]">01</span>
-                            <h3 className="font-display text-4xl lg:text-5xl text-white tracking-widest uppercase leading-none">Bebas Neue</h3>
-                            <span className="text-[8px] uppercase tracking-[0.6em] text-white/20 italic">Headline Typography</span>
-                        </div>
-                    </motion.div>
+                        <Image
+                            src="/face.png"
+                            alt=""
+                            fill
+                            priority={false}
+                            sizes="(max-width: 768px) 70vw, 520px"
+                            className="object-contain drop-shadow-[0_40px_80px_rgba(0,0,0,0.85)]"
+                        />
 
-                    {/* MAIN WORD: STUDIO */}
-                    <div className="order-1 lg:order-2 relative group">
-                        <motion.h1
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
-                            className="text-[32vw] lg:text-[25vw] font-display text-transparent uppercase leading-[0.75] select-none text-center lg:text-left"
+                        {/* Specular sheen clipped to the silhouette */}
+                        <motion.div
+                            aria-hidden
                             style={{
-                                backgroundImage: 'url("/gate1.png")',
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center',
-                                WebkitBackgroundClip: 'text',
-                                backgroundClip: 'text'
+                                translateZ: 1,
+                                background: sheen,
+                                WebkitMaskImage: "url(/face.png)",
+                                maskImage: "url(/face.png)",
+                                WebkitMaskSize: "contain",
+                                maskSize: "contain",
+                                WebkitMaskPosition: "center",
+                                maskPosition: "center",
+                                WebkitMaskRepeat: "no-repeat",
+                                maskRepeat: "no-repeat",
                             }}
-                        >
-                            STUDIO
-                        </motion.h1>
-
-                        {/* ALPHABET GRID (A-M) embedded beside the text */}
-                        <div className="absolute top-1/2 left-[40%] -translate-y-1/2 hidden lg:grid grid-cols-4 gap-x-8 gap-y-2 opacity-10 pointer-events-none">
-                            {"ABCDEFGHIJKL".split('').map(l => (
-                                <span key={l} className="text-[9px] font-mono text-white">{l}</span>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* FLOATING VIDEO "BESIDE" THE TEXT */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.8, x: 50 }}
-                        whileInView={{ opacity: 1, scale: 1, x: 0 }}
-                        transition={{ duration: 2, delay: 1 }}
-                        className="hidden lg:block absolute -right-20 top-0 w-48 h-80 border border-white/10 p-1 bg-white/5 backdrop-blur-xl rotate-[90deg]
-                         group-hover:rotate-0 transition-transform duration-1000 z-20 overflow-hidden rounded-full shadow-2xl"
-                    >
-                        <video
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            className="w-full h-full object-cover"
-                        >
-                            <source src="https://assets.mixkit.co/videos/preview/mixkit-smoke-and-ink-fills-vertical-screen-34440-large.mp4" type="video/mp4" />
-                        </video>
-                        {/* <div className="absolute bottom-4 left-4 flex flex-col">
-                            <span className="text-[8px] uppercase tracking-widest text-white/40 font-mono">Process Reel</span>
-                            <span className="text-[6px] uppercase tracking-widest text-[#cda56e]">Active Capture</span>
-                        </div> */}
+                            className="absolute inset-0 mix-blend-screen"
+                        />
                     </motion.div>
-                </div>
-
-                {/* BOTTOM SECTION: GRAPHY STYLE */}
-                <div className="relative flex flex-col lg:flex-row items-end justify-between gap-12 mt-[-5vw]">
-                    {/* ALPHABET GRID (N-Z) embedded beside the text */}
-                    <div className="order-3 lg:order-1 hidden lg:grid grid-cols-4 gap-x-8 gap-y-2 opacity-10 pointer-events-none self-center">
-                        {"MNOPQRSTUVWX".split('').map(l => (
-                            <span key={l} className="text-[9px] font-mono text-white">{l}</span>
-                        ))}
-                    </div>
-
-                    {/* MAIN WORD: ARCHIVE */}
-                    <div className="order-1 lg:order-2 flex flex-col items-end">
-                        <motion.h1
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-                            className="text-[32vw] lg:text-[25vw] font-display text-transparent uppercase leading-[0.75] select-none text-right"
-                            style={{
-                                backgroundImage: 'url("/gate2.png")',
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'bottom',
-                                WebkitBackgroundClip: 'text',
-                                backgroundClip: 'text'
-                            }}
-                        >
-                            CRAFT
-                        </motion.h1>
-                    </div>
-
-                    {/* RIGHT LABEL (02 MONTSERRAT) */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 1.5, delay: 0.8 }}
-                        className="order-2 lg:order-3 text-right"
-                    >
-                        <div className="flex flex-col gap-1 items-end">
-                            <span className="text-[10px] font-mono text-white/40 tracking-[0.4em]">02</span>
-                            <h3 className="font-sans font-light text-4xl lg:text-5xl text-white tracking-[0.2em] uppercase leading-none">Montserrat</h3>
-                            <span className="text-[8px] uppercase tracking-[0.6em] text-white/20 italic">Functional Typography</span>
-
-                            {/* SMALL SECONDARY VIDEO FOR MOBILE/TABLET BESIDE TEXT */}
-                            <div className="mt-8 w-32 h-20 border border-white/5 bg-white/[0.02] relative overflow-hidden rounded lg:hidden">
-                                <video autoPlay loop muted playsInline className="w-full h-full object-cover">
-                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-smoke-and-ink-fills-vertical-screen-34440-large.mp4" type="video/mp4" />
-                                </video>
-                            </div>
-                        </div>
-                    </motion.div>
-                </div>
-            </div>
-
-            {/* DECORATIVE ELEMENTS */}
-            <div className="absolute bottom-24 left-1/2 -translate-x-1/2 text-center opacity-10">
-                <p className="font-serif text-[10px] tracking-[1em] uppercase">The Art of the Archive</p>
+                  </motion.div>
+                </motion.div>
             </div>
         </section>
     );

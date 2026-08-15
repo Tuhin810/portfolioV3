@@ -41,6 +41,21 @@ const PORTALS = [
 ];
 
 const ZOOM_MS = 900;
+
+// Doors arrive one after another, sliding in from the left
+const ARCH_ROW = {
+    hidden: {},
+    shown: { transition: { staggerChildren: 0.18, delayChildren: 0.15 } },
+};
+
+const ARCH = {
+    hidden: { opacity: 0, x: -80 },
+    shown: {
+        opacity: 1,
+        x: 0,
+        transition: { duration: 1, ease: [0.22, 1, 0.36, 1] as const },
+    },
+};
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 export const Trials: React.FC = () => {
@@ -75,16 +90,19 @@ export const Trials: React.FC = () => {
                     >
                         {/* LEFT: THE GATES */}
                         <div className="flex-1 relative flex flex-col justify-between p-8 md:p-14 pb-0 md:pb-0 h-full border-l border-white/5">
-                            {/* Header */}
-                            <div className="flex justify-between items-start uppercase text-[10px] tracking-[0.6em] opacity-25">
-                                <span>Sacred Thresholds</span>
-                                <span className="italic tracking-[0.2em]">I &mdash; III</span>
-                            </div>
+
 
                             {/* Arches */}
-                            <div className="flex-1 flex items-end justify-center w-full max-w-6xl mx-auto gap-6 md:gap-12">
+                            <motion.div
+                                variants={ARCH_ROW}
+                                initial="hidden"
+                                whileInView="shown"
+                                viewport={{ once: true, amount: 0.4 }}
+                                className="flex-1 flex items-end justify-center w-full max-w-6xl mx-auto gap-6 md:gap-12"
+                            >
                                 {PORTALS.map((portal) => (
-                                    <button
+                                    <motion.button
+                                        variants={ARCH}
                                         type="button"
                                         key={portal.id}
                                         onClick={() => handlePortalClick(portal.id, portal.view)}
@@ -98,7 +116,7 @@ export const Trials: React.FC = () => {
                                                 alt=""
                                                 fill
                                                 sizes="(max-width: 768px) 33vw, 420px"
-                                                className="object-cover opacity-25 transition-[opacity,transform] duration-700 ease-out group-hover:opacity-45 group-hover:scale-[1.04]"
+                                                className="object-cover opacity-50 blur-0 transition-[opacity,filter] duration-500 ease-out group-hover:opacity-40 group-hover:blur-[6px]"
                                             />
 
                                             {/* Base fade */}
@@ -113,9 +131,9 @@ export const Trials: React.FC = () => {
                                             </div>
                                         </div>
 
-                                    </button>
+                                    </motion.button>
                                 ))}
-                            </div>
+                            </motion.div>
 
 
                         </div>

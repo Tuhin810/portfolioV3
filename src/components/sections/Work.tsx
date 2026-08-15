@@ -22,7 +22,7 @@ export default function Work() {
     return (
         <section
             ref={sectionRef}
-            className="relative h-[600vh] w-full bg-black border-y border-white/10 text-[#d4cdbc] overflow-visible border-y border-white/5"
+            className="relative h-[600vh] w-full bg-background border-y border-white/10 text-[#d4cdbc] overflow-visible border-y border-white/5"
         >
             <div className="sticky top-0 left-0 h-screen w-full flex items-center justify-center z-10">
                 {/* DECORATIVE CELESTIAL SUNBURST (Top Right) */}
