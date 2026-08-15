@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
+import SideRays from "@/components/shared/SideRays";
 
 export const Arrival: React.FC<{ onHit?: () => void }> = ({ onHit }) => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -20,6 +21,22 @@ export const Arrival: React.FC<{ onHit?: () => void }> = ({ onHit }) => {
 
     return (
         <section ref={containerRef} className="relative flex flex-col items-center justify-center min-h-screen px-6 w-full max-w-[100vw] overflow-hidden bg-background">
+
+            {/* Light Rays from the top-right corner */}
+            <div className="absolute inset-0 z-[1] pointer-events-none">
+                <SideRays
+                    origin="top-right"
+                    rayColor1="#cda56e"
+                    rayColor2="#f5e6c8"
+                    speed={1.2}
+                    intensity={1.1}
+                    spread={1.6}
+                    falloff={1.4}
+                    saturation={1.2}
+                    blend={0.55}
+                    opacity={0.55}
+                />
+            </div>
 
             {/* --- EXACT GEOMETRY BACKGROUND LAYER (REPLICATING REFERENCE) --- */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0">
@@ -70,8 +87,27 @@ export const Arrival: React.FC<{ onHit?: () => void }> = ({ onHit }) => {
                 </motion.div>
             </div>
 
-            {/* Top Label & Logo */}
+            {/* Centered Eye */}
             <motion.div
+                style={{ opacity, scale, y }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 3, delay: 2, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none select-none"
+            >
+                <div className="relative w-[60vw] h-[60vw] max-w-[720px] max-h-[720px]">
+                    <Image
+                        src="/eye.png"
+                        alt="Eye"
+                        fill
+                        priority
+                        className="object-contain drop-shadow-[0_0_40px_rgba(205,165,110,0.35)]"
+                    />
+                </div>
+            </motion.div>
+
+            {/* Top Label & Logo */}
+            {/* <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 0.5, y: 0 }}
                 transition={{ duration: 3, delay: 0.1 }}
@@ -85,8 +121,7 @@ export const Arrival: React.FC<{ onHit?: () => void }> = ({ onHit }) => {
                         className="object-contain"
                     />
                 </div>
-                <span className="font-serif text-[10px] tracking-[0.8em] uppercase gold-text">The Epiphany</span>
-            </motion.div>
+            </motion.div> */}
 
             {/* Subtitle - Centered Bottom */}
             <motion.div
@@ -96,23 +131,29 @@ export const Arrival: React.FC<{ onHit?: () => void }> = ({ onHit }) => {
                 transition={{ duration: 3, delay: 4 }}
                 className="absolute bottom-24 left-1/2 text-center z-20 whitespace-nowrap"
             >
-                <p className="font-serif text-[11px] tracking-[0.8em] uppercase italic text-white/40">
-                    Architect of Order
-                </p>
+
             </motion.div>
 
-            {/* Main Name Reveal */}
+            {/* Main Name Reveal — split around the eye */}
             <motion.div
-                style={{ opacity, scale, filter: blur, y, zIndex: 20 }}
+                style={{ opacity, scale, filter: blur, y, zIndex: 10 }}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 4, delay: 1.5, ease: [0.22, 1, 0.36, 1] }}
-                className="glow-text-container w-full flex flex-col items-center justify-center relative backdrop-blur-[2px]"
+                className="absolute inset-0 flex items-center justify-between px-[4vw] pointer-events-none"
             >
-                <div className="volumetric-glow" />
-                <h1 className="text-[25vw] font-bold tracking-[-0.08em] uppercase leading-none liquid-light select-none text-center relative z-10 drop-shadow-[0_0_30px_rgba(0,0,0,0.5)]">
-                    Tuhin
-                </h1>
+                <div className="glow-text-container">
+                    <div className="volumetric-glow" />
+                    <h1 className="text-[clamp(2.5rem,11vw,10rem)] font-bold tracking-[-0.06em] uppercase leading-none liquid-light select-none whitespace-nowrap relative z-10 drop-shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+                        HI   I&apos;m
+                    </h1>
+                </div>
+                <div className="glow-text-container">
+                    <div className="volumetric-glow" />
+                    <h1 className="text-[clamp(2.5rem,11vw,10rem)] font-bold tracking-[-0.06em] uppercase leading-none liquid-light select-none whitespace-nowrap relative z-10 drop-shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+                        Tuhin
+                    </h1>
+                </div>
             </motion.div>
 
             {/* Scroll Prompt */}
