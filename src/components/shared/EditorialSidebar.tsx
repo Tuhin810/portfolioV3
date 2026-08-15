@@ -56,7 +56,7 @@ export const EditorialSidebar: React.FC<EditorialSidebarProps> = ({
     );
 
     const TitleColumn = (
-        <div className="flex flex-col relative h-full border-r border-white/10">
+        <div className="flex flex-col relative h-full ">
             {topImage && (
                 <div className="h-48 border-b border-white/10 flex items-center justify-center bg-black/10 overflow-hidden">
                     <img src={topImage} alt="" className="w-full h-full object-cover" />
@@ -74,13 +74,7 @@ export const EditorialSidebar: React.FC<EditorialSidebarProps> = ({
                 </h2>
             </div>
 
-            {showMoscowPill && (
-                <div className={`absolute top-[55%] ${layout === 'info-first' ? '-right-5' : '-left-5'} translate-x-1/2 -rotate-90 z-20`}>
-                    <div className="px-10 py-2 border border-white/10 rounded-full bg-black/80 shadow-[0_0_30px_rgba(0,0,0,0.5)] backdrop-blur-xl">
-                        <span className="text-[11px] tracking-[0.6em] uppercase text-[#d4d4d4] font-medium">Moscow</span>
-                    </div>
-                </div>
-            )}
+
 
             {showMoon && (
                 <div className="h-48 border-t border-white/10 flex items-center justify-center bg-black/10 p-4">
