@@ -8,14 +8,10 @@ interface PrologueProps {
 }
 
 const GREETINGS = [
-  "Welcome",
-  "ようこそ",
-  "स्वागत है",
-  "欢迎",
-  "مرحباً",
-  "환영합니다",
-  "무선",
-  "Welcome",
+  "환영합니다", // Korean
+  "ようこそ",    // Japanese
+  "欢迎",       // Chinese
+  "स्वागत है",   // Hindi
 ];
 
 export const Prologue: React.FC<PrologueProps> = ({ onEnter }) => {
@@ -30,19 +26,19 @@ export const Prologue: React.FC<PrologueProps> = ({ onEnter }) => {
     };
   }, []);
 
-  // Step through multilingual greetings at a calm, smooth pace
+  // Step through the 4 languages at a smooth, readable rhythm
   useEffect(() => {
     if (currentIndex >= GREETINGS.length - 1) {
-      // Last greeting ("Welcome") reached — hold for 600ms, then lift curtain
+      // Last greeting reached — hold for 700ms, then lift curtain
       const finishTimer = setTimeout(() => {
         onEnter();
-      }, 600);
+      }, 700);
       return () => clearTimeout(finishTimer);
     }
 
     const timer = setTimeout(() => {
       setCurrentIndex((prev) => prev + 1);
-    }, 550);
+    }, 700); // 700ms per language
 
     return () => clearTimeout(timer);
   }, [currentIndex, onEnter]);

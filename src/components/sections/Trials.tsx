@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useRef } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import Image from "next/image";
 import { EditorialSidebar } from "@/components/shared/EditorialSidebar";
 import { AboutView } from "@/components/views/AboutView";
@@ -58,6 +58,58 @@ const ARCH = {
 };
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+// Angel that falls down when Trials arrives in view, then gently floats
+const FallingAngel = () => {
+    const ref = useRef<HTMLDivElement>(null);
+    const isInView = useInView(ref, { once: true, amount: 0.35 });
+    const [landed, setLanded] = useState(false);
+
+    return (
+        <div
+            ref={ref}
+            className="absolute top-6 left-6 md:top-8 md:left-10 z-20 w-28 sm:w-36 md:w-44 lg:w-52 pointer-events-none select-none"
+        >
+            <motion.div
+                initial={{ y: -260, opacity: 0 }}
+                animate={
+                    isInView
+                        ? landed
+                            ? { y: [0, -10, 0], opacity: 0.85 }
+                            : { y: 0, opacity: 0.85 }
+                        : { y: -260, opacity: 0 }
+                }
+                transition={
+                    landed
+                        ? {
+                            duration: 5,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                        }
+                        : {
+                            duration: 1.8,
+                            ease: [0.19, 1, 0.22, 1], // Smooth natural gravity descent
+                            delay: 0.1,
+                        }
+                }
+                onAnimationComplete={() => {
+                    if (isInView && !landed) {
+                        setLanded(true);
+                    }
+                }}
+            >
+                <Image
+                    src="/design/fall.png"
+                    alt="The Fall"
+                    width={1080}
+                    height={1350}
+                    priority
+                    className="w-full h-auto opacity-70 object-contain drop-shadow-[0_0_35px_rgba(197,160,40,0.22)]"
+                />
+            </motion.div>
+        </div>
+    );
+};
+
 export const Trials: React.FC = () => {
     const [view, setView] = useState<ViewState>("default");
     const [zoomingPortal, setZoomingPortal] = useState<string | null>(null);
@@ -93,6 +145,8 @@ export const Trials: React.FC = () => {
                         {/* LEFT: THE GATES */}
                         <div className="flex-1 relative flex flex-col justify-between p-8 md:p-14 pb-0 md:pb-0 h-full border-l border-white/5">
 
+                            {/* Top Left Corner: Golden Angel that falls on arrival then floats */}
+                            <FallingAngel />
 
                             {/* Arches */}
                             <motion.div
