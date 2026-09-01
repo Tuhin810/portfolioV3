@@ -76,8 +76,8 @@ const DROP_ANIMATE = { opacity: 1, y: 0, scale: 1 };
 
 // Each piece falls a beat after the one before it
 const dropTransition = (order: number) => ({
-    duration: 1.1,
-    delay: order * 0.12,
+    duration: 2.4,
+    delay: 0.35 + order * 0.28,
     ease: [0.16, 1, 0.3, 1] as const,
 });
 
@@ -287,11 +287,24 @@ export const Odyssey = () => {
 
     // Hold everything back until the section actually reaches the viewport
     const inView = useInView(sectionRef, { once: true, amount: 0.15 });
-    const revealed = bubblesMounted && inView;
+
+    // Intro sequence: 1 = angel falls, 2 = stone lands, 3 = memory bubbles drop
+    const [introStage, setIntroStage] = useState(0);
+    const revealed = bubblesMounted && introStage >= 3;
 
     useEffect(() => {
         setBubblesMounted(true);
     }, []);
+
+    useEffect(() => {
+        if (!inView) return;
+        const timers = [
+            setTimeout(() => setIntroStage(1), 200),
+            setTimeout(() => setIntroStage(2), 1600),
+            setTimeout(() => setIntroStage(3), 3200),
+        ];
+        return () => timers.forEach(clearTimeout);
+    }, [inView]);
 
     const { scrollYProgress } = useScroll({
         target: sectionRef,
@@ -319,6 +332,62 @@ export const Odyssey = () => {
             </div>
 
 
+
+            {/* INTRO: THE FALL, THEN THE STONE */}
+            <div className="relative z-10 flex flex-col items-center pt-24 pb-16">
+                {/* The falling angel */}
+                <motion.div
+                    initial={{ opacity: 0, y: -220, rotate: -14, scale: 0.9 }}
+                    animate={
+                        introStage >= 1
+                            ? { opacity: 1, y: 0, rotate: 0, scale: 1 }
+                            : { opacity: 0, y: -220, rotate: -14, scale: 0.9 }
+                    }
+                    transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
+                    className="relative w-[260px] sm:w-[380px] md:w-[460px] aspect-square"
+                >
+                    <Image
+                        src="/design/fall1.png"
+                        alt=""
+                        fill
+                        sizes="(max-width: 768px) 70vw, 460px"
+                        className="object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.7)]"
+                        priority
+                    />
+                </motion.div>
+
+                {/* The stone slab, engraved */}
+                <motion.div
+                    initial={{ opacity: 0, y: -120, scale: 0.92 }}
+                    animate={
+                        introStage >= 2
+                            ? { opacity: 1, y: 0, scale: 1 }
+                            : { opacity: 0, y: -120, scale: 0.92 }
+                    }
+                    transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+                    className="relative -mt-10 sm:-mt-16 w-[330px] sm:w-[520px] md:w-[680px] aspect-[1780/880]"
+                >
+                    <Image
+                        src="/design/stone.png"
+                        alt=""
+                        fill
+                        sizes="(max-width: 768px) 85vw, 680px"
+                        className="object-contain drop-shadow-[0_40px_70px_rgba(0,0,0,0.8)]"
+                    />
+
+                    {/* Engraved word */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <motion.h2
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: introStage >= 2 ? 1 : 0 }}
+                            transition={{ duration: 1.4, delay: 0.6, ease: "easeOut" }}
+                            className="font-serif uppercase tracking-[0.35em] text-[#5a5148] text-xl sm:text-3xl md:text-4xl translate-y-[2%] [text-shadow:0_1px_0_rgba(255,255,255,0.45),0_-1px_1px_rgba(0,0,0,0.55)]"
+                        >
+                            Memories
+                        </motion.h2>
+                    </div>
+                </motion.div>
+            </div>
 
             {/* GRID OF KINETIC BUBBLES */}
             <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-16 md:gap-20">

@@ -79,7 +79,7 @@ const FallingAngel = () => {
     return (
         <div
             ref={ref}
-            className="absolute top-6 left-6 md:top-8 md:left-10 z-20 w-28 sm:w-36 md:w-44 lg:w-52 pointer-events-none select-none"
+            className="absolute top-6 left-6 md:top-8 md:left-10 z-20 w-28 sm:w-36 md:w-68 pointer-events-none select-none"
         >
             <motion.div
                 initial={{ y: -260, opacity: 0 }}
@@ -110,12 +110,20 @@ const FallingAngel = () => {
                 }}
             >
                 <Image
+                    src="/design/fall1.png"
+                    alt="The Fall"
+                    width={1580}
+                    height={1850}
+                    priority
+                    className="w-full h-auto opacit object-contain drop-shadow-[0_0_35px_rgba(197,160,40,0.22)]"
+                />
+                <Image
                     src="/design/fall.png"
                     alt="The Fall"
-                    width={1080}
-                    height={1350}
+                    width={1580}
+                    height={1850}
                     priority
-                    className="w-full h-auto opacity-70 object-contain drop-shadow-[0_0_35px_rgba(197,160,40,0.22)]"
+                    className="w-full h-auto -mt-68 opacity-50 opacit object-contain drop-shadow-[0_0_35px_rgba(197,160,40,0.22)]"
                 />
             </motion.div>
         </div>
