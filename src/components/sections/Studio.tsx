@@ -98,6 +98,13 @@ export const Studio: React.FC = () => {
     // 3. Marquee rows dimming smoothly into the abyss
     const marqueeOpacity = useTransform(progress, [0.45, 0.85], [1, 0.15]);
 
+    // The scroll values above read the real scroll position, which the browser
+    // may have already restored before hydration — the server always renders
+    // them at progress 0. Hold the static values until we're mounted so the
+    // first client render matches the SSR markup, then hand over to scroll.
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
+
     // The rows hold until the face has landed
     const [textStarted, setTextStarted] = useState(false);
     useEffect(() => {
@@ -142,7 +149,7 @@ export const Studio: React.FC = () => {
             >
                 {/* MARQUEE ROWS — behind the face */}
                 <motion.div
-                    style={{ opacity: marqueeOpacity }}
+                    style={{ opacity: mounted ? marqueeOpacity : 1 }}
                     className="relative z-0 w-full flex flex-col gap-10 lg:gap-16"
                 >
                     {ROWS.map((items, i) => (
@@ -168,7 +175,7 @@ export const Studio: React.FC = () => {
                     style={{
                         x: shiftX,
                         y: shiftY,
-                        opacity: faceScrollOpacity,
+                        opacity: mounted ? faceScrollOpacity : 1,
                     }}
                     initial={{ opacity: 0 }}
                     animate={inView ? { opacity: [0, 1, 0.85, 1], scale: [0.9, 1, 0.94, 1] } : { opacity: 0 }}
@@ -180,9 +187,9 @@ export const Studio: React.FC = () => {
                 <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
                     <motion.div
                         style={{
-                            opacity: faceScrollOpacity,
-                            scale: faceScrollScale,
-                            y: faceScrollY,
+                            opacity: mounted ? faceScrollOpacity : 1,
+                            scale: mounted ? faceScrollScale : 1,
+                            y: mounted ? faceScrollY : 0,
                             perspective: "1200px",
                         }}
                         className="select-none transform-gpu will-change-[transform,opacity] [backface-visibility:hidden]"
@@ -241,7 +248,7 @@ export const Studio: React.FC = () => {
 
                 {/* GRADIENT FADE TO DARK: Smoothly darkens to #080808 matching the next section */}
                 <motion.div
-                    style={{ opacity: fadeToDark }}
+                    style={{ opacity: mounted ? fadeToDark : 0 }}
                     className="pointer-events-none absolute inset-0 z-[15] bg-[#080808]"
                 />
             </div>

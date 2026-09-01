@@ -181,7 +181,6 @@ export const Trials: React.FC = () => {
                                         variants={ARCH}
                                         type="button"
                                         key={portal.id}
-                                        onClick={() => handlePortalClick(portal.id, portal.view)}
                                         aria-label={portal.title}
                                         className={`group relative ${portal.size} flex flex-col items-center focus:outline-none`}
                                     >
