@@ -17,14 +17,14 @@ type Memory = {
 };
 
 const MEMORIES: Memory[] = [
-    { id: "01", title: "ACROPOLIS", image: "/gate1.png", shape: "pill-v", quote: "The crown of the world." },
-    { id: "02", title: "DELPHI", image: "/gate2.png", shape: "circle", quote: "The Oracle whispers." },
-    { id: "03", title: "METEORA", image: "/gate3.png", shape: "pill-h", quote: "Between heaven and earth." },
-    { id: "04", title: "SANTORINI", image: "/ob1.png", shape: "circle", quote: "A caldera of dreams." },
-    { id: "05", title: "CORINTH", image: "/gate1.png", shape: "pill-v", quote: "The ancient bridge." },
-    { id: "06", title: "OLYMPIA", image: "/gate2.png", shape: "circle", quote: "Flame of the ages." },
-    { id: "07", title: "MYKONOS", image: "/gate3.png", shape: "pill-h", quote: "A white-washed labyrinth." },
-    { id: "08", title: "RHODES", image: "/ob1.png", shape: "pill-v", quote: "Colossus of the mind." },
+    { id: "01", title: "ACROPOLIS", image: "/personal/20250410_182400.jpg", shape: "pill-v", quote: "The crown of the world." },
+    { id: "02", title: "DELPHI", image: "/personal/20250411_012549.jpg", shape: "circle", quote: "The Oracle whispers." },
+    { id: "03", title: "METEORA", image: "/personal/20250530_191351.jpg", shape: "pill-h", quote: "Between heaven and earth." },
+    { id: "04", title: "SANTORINI", image: "/personal/20250531_144216.jpg", shape: "circle", quote: "A caldera of dreams." },
+    { id: "05", title: "CORINTH", image: "/personal/20250607_230401.jpg", shape: "pill-v", quote: "The ancient bridge." },
+    { id: "06", title: "OLYMPIA", image: "/personal/20250608_185457 (1).jpg", shape: "circle", quote: "Flame of the ages." },
+    { id: "07", title: "MYKONOS", image: "/personal/20260224_140732.jpg", shape: "pill-h", quote: "A white-washed labyrinth." },
+    { id: "08", title: "RHODES", image: "/personal/20260224_161227.jpg", shape: "pill-v", quote: "Colossus of the mind." },
 ];
 
 /* ----------------------------------

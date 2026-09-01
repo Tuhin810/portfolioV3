@@ -13,28 +13,40 @@ type ViewState = "default" | "about" | "skills" | "experience";
 const PORTALS = [
     {
         id: "I",
+        years: "2023 - 2024",
+        designation: "Fullstack Developer",
         label: "The Origin",
         title: "About Me",
         view: "about" as ViewState,
         cover: "/gate1.png",
+        logo: "/logos/aeonix.png",
+        logoClassName: "",
         origin: "20% 70%",
         size: "w-[20vw] max-w-[260px]",
     },
     {
         id: "II",
+        years: "2024 - 2025",
+        designation: "Team Lead",
         label: "The Armory",
         title: "Skills",
         view: "skills" as ViewState,
         cover: "/gate2.png",
+        logo: "/logos/scriptures.svg",
+        logoClassName: "brightness-0 invert",
         origin: "50% 70%",
         size: "w-[26vw] max-w-[340px]",
     },
     {
         id: "III",
+        years: "2025 - 2026",
+        designation: "Product Engineer",
         label: "The Odyssey",
         title: "Experience",
         view: "experience" as ViewState,
         cover: "/gate3.png",
+        logo: "/logos/kwad.png",
+        logoClassName: "brightness-0 invert",
         origin: "80% 70%",
         size: "w-[32vw] max-w-[420px]",
     },
@@ -178,12 +190,35 @@ export const Trials: React.FC = () => {
                                             {/* Base fade */}
                                             <div className="absolute inset-0 bg-gradient-to-t from-[#0d0c0b] via-[#0d0c0b]/20 to-transparent" />
 
-                                            {/* Numeral */}
-                                            <div className="absolute inset-x-0 bottom-8 flex flex-col items-center gap-3">
-                                                <div className="w-px h-6 bg-gold-leaf/25" />
-                                                <span className="text-2xl  text-gold-leaf/35 transition-colors duration-500 group-hover:text-gold-leaf/70">
-                                                    {portal.id}
-                                                </span>
+                                            {/* Center Logo on Hover — completely unblurred on z-30 above the blurred background */}
+                                            <div className="absolute inset-0 flex items-center justify-center p-6 z-30 pointer-events-none">
+                                                <div className="w-full max-w-[170px] h-16 sm:h-20 flex items-center justify-center opacity-0 scale-95 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:scale-100">
+                                                    <img
+                                                        src={portal.logo}
+                                                        alt={portal.title}
+                                                        className={`max-w-full max-h-full object-contain drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)] ${portal.logoClassName}`}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {/* Numeral / Years & Designation on Hover */}
+                                            <div className="absolute inset-x-0 bottom-6 sm:bottom-8 flex flex-col items-center gap-2 sm:gap-3 z-30 pointer-events-none px-2">
+                                                <div className="w-px h-5 sm:h-6 bg-gold-leaf/25 group-hover:bg-gold-leaf/50 transition-colors duration-500" />
+                                                <div className="relative h-12 sm:h-16 flex items-center justify-center">
+                                                    {/* Default: Roman numeral */}
+                                                    <span className="text-2xl sm:text-3xl text-gold-leaf/40 tracking-widest transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-2 group-hover:scale-90 absolute">
+                                                        {portal.id}
+                                                    </span>
+                                                    {/* Hover: Designation & Year range in normal font (Bigger) */}
+                                                    <div className="flex flex-col items-center gap-1 font-sans transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 whitespace-nowrap text-center">
+                                                        <span className="text-sm sm:text-lg md:text-xl font-medium text-white tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+                                                            {portal.designation}
+                                                        </span>
+                                                        <span className="text-xs sm:text-sm md:text-base font-normal text-white/70 tracking-wider">
+                                                            {portal.years}
+                                                        </span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
