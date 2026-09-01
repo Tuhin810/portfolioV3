@@ -33,24 +33,24 @@ export default function Home() {
         transition={{ duration: 1.2, ease: "easeOut" }}
         className={`w-full relative z-10 ${!started ? "pointer-events-none" : ""}`}
       >
-              {/* Stage II: THE CALLING */}
-              <Arrival onHit={() => setIsOfferingOpen(true)} />
+        {/* Stage II: THE CALLING */}
+        <Arrival onHit={() => setIsOfferingOpen(true)} />
 
-              {/* Stage III: THE FORGE */}
-              <Trials />
+        {/* Stage III: THE FORGE */}
+        <Trials />
 
-              {/* Stage IV: THE DISCIPLINE */}
-              <Studio />
+        {/* Stage IV: THE DISCIPLINE */}
+        <Studio />
 
-              {/* <WorkPage /> */}
+        <WorkPage />
 
-              {/* <Images title="Odessy" /> */}
+        {/* <Images title="Odessy" /> */}
 
-              {/* Stage V: THE ODYSSEY */}
-              <Odyssey />
+        {/* Stage V: THE ODYSSEY */}
+        <Odyssey />
 
-              {/* FINAL NARRATIVE FOOTER */}
-              {/* <Footer onContact={() => setIsOfferingOpen(true)} /> */}
+        {/* FINAL NARRATIVE FOOTER */}
+        <Footer onContact={() => setIsOfferingOpen(true)} />
       </motion.div>
 
       {/* MODAL SYSTEM */}
