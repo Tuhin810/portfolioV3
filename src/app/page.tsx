@@ -20,18 +20,19 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-background">
-      <AnimatePresence mode="wait">
-        {!started ? (
+      <AnimatePresence>
+        {!started && (
           <Prologue onEnter={() => setStarted(true)} />
-        ) : (
-          <>
-            <motion.div
-              key="story"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 4, delay: 0.5 }}
-              className="w-full relative z-10"
-            >
+        )}
+      </AnimatePresence>
+
+      <motion.div
+        key="story"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: started ? 1 : 0 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        className={`w-full relative z-10 ${!started ? "pointer-events-none" : ""}`}
+      >
               {/* Stage II: THE CALLING */}
               <Arrival onHit={() => setIsOfferingOpen(true)} />
 
@@ -50,16 +51,13 @@ export default function Home() {
 
               {/* FINAL NARRATIVE FOOTER */}
               {/* <Footer onContact={() => setIsOfferingOpen(true)} /> */}
-            </motion.div>
+      </motion.div>
 
-            {/* MODAL SYSTEM */}
-            <Offering
-              isOpen={isOfferingOpen}
-              onClose={() => setIsOfferingOpen(false)}
-            />
-          </>
-        )}
-      </AnimatePresence>
+      {/* MODAL SYSTEM */}
+      <Offering
+        isOpen={isOfferingOpen}
+        onClose={() => setIsOfferingOpen(false)}
+      />
     </div>
   );
 }

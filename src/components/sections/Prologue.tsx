@@ -1,87 +1,85 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
-
-// WebGL only — keep it off the server render
-const Dither = dynamic(() => import("@/components/shared/Dither"), { ssr: false });
+import React, { useEffect, useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface PrologueProps {
-    onEnter: () => void;
+  onEnter: () => void;
 }
 
-// Dot geometry — the swap distance is one dot plus the gap between them
-const DOT = 96;
-const GAP = 28;
-const SWAP = DOT + GAP;
+const GREETINGS = [
+  "Welcome",
+  "ようこそ",
+  "स्वागत है",
+  "欢迎",
+  "مرحباً",
+  "환영합니다",
+  "무선",
+  "Welcome",
+];
 
 export const Prologue: React.FC<PrologueProps> = ({ onEnter }) => {
-    const [progress, setProgress] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-    useEffect(() => {
-        const duration = 4000;
-        const interval = 30;
-        const step = (interval / duration) * 100;
-
-        const timer = setInterval(() => {
-            setProgress((prev) => {
-                if (prev >= 100) {
-                    clearInterval(timer);
-                    setTimeout(onEnter, 1000);
-                    return 100;
-                }
-                return prev + step;
-            });
-        }, interval);
-
-        return () => clearInterval(timer);
-    }, [onEnter]);
-
-    // One dot moves, then the other — a two-beat swap that loops
-    const swapTransition = {
-        duration: 2.4,
-        times: [0, 0.4, 0.5, 0.9, 1],
-        repeat: Infinity,
-        ease: "easeInOut" as const,
+  // Lock body scroll during preloader
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = originalOverflow;
     };
+  }, []);
 
-    return (
-        <motion.div
-            key="prologue"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 1.1, filter: "blur(20px)", transition: { duration: 2.5 } }}
-            className="flex flex-col items-center justify-center min-h-screen px-6 text-center bg-gradient-to-br from-[#111] to-[#000]/10 overflow-hidden relative"
-        >
+  // Step through multilingual greetings at a calm, smooth pace
+  useEffect(() => {
+    if (currentIndex >= GREETINGS.length - 1) {
+      // Last greeting ("Welcome") reached — hold for 600ms, then lift curtain
+      const finishTimer = setTimeout(() => {
+        onEnter();
+      }, 600);
+      return () => clearTimeout(finishTimer);
+    }
 
-            <img src="/mythic-logo.png" className="w-96 grayscale" alt="" />
+    const timer = setTimeout(() => {
+      setCurrentIndex((prev) => prev + 1);
+    }, 550);
 
+    return () => clearTimeout(timer);
+  }, [currentIndex, onEnter]);
 
-            {/* TWO DOTS — swapping places, one at a time */}
-            <div
-                className="relative z-20 flex items-center"
-                style={{ gap: GAP, height: DOT }}
-                aria-label={`Loading ${Math.round(progress)}%`}
-                role="progressbar"
-                aria-valuenow={Math.round(progress)}
-            >
-                {/* Solid */}
-                <motion.div
-                    animate={{ x: [0, 0, SWAP, SWAP, 0] }}
-                    transition={swapTransition}
-                    style={{ width: DOT, height: DOT }}
-                    className="rounded-full bg-[#cda56e] shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
-                />
+  const currentGreeting = GREETINGS[currentIndex];
 
-                {/* Outline */}
-                <motion.div
-                    animate={{ x: [0, -SWAP, -SWAP, 0, 0] }}
-                    transition={swapTransition}
-                    style={{ width: DOT, height: DOT }}
-                    className="rounded-full border border-white/10"
-                />
+  return (
+    <motion.div
+      key="prologue-curtain"
+      initial={{ y: 0 }}
+      exit={{
+        y: "-100%",
+        transition: {
+          duration: 0.95,
+          ease: [0.76, 0, 0.24, 1], // Luxury cubic-bezier curtain slide
+        },
+      }}
+      className="fixed inset-0 z-50 flex flex-col justify-end items-end bg-[#0d0d0e] text-[#f5f5f5] overflow-hidden select-none cursor-pointer p-8 sm:p-12 md:p-16 lg:p-20"
+      onClick={onEnter}
+    >
+      {/* Bottom Right Corner Multilingual Greeting */}
+      <div className="text-right">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0, y: 12, filter: "blur(6px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: -12, filter: "blur(6px)" }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="tracking-tight"
+          >
+            <div className="text-5xl sm:text-[7rem] font-light text-white leading-none">
+              {currentGreeting}
             </div>
-        </motion.div>
-    );
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
 };

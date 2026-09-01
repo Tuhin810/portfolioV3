@@ -39,7 +39,10 @@ const FloatingBubble = () => {
     const vy = useRef((Math.random() - 0.5) * 0.05);
     const size = useRef(Math.random() * 100 + 50);
 
-    useAnimationFrame((t) => {
+    const transformX = useTransform(x, (v) => `${v}vw`);
+    const transformY = useTransform(y, (v) => `${v}vh`);
+
+    useAnimationFrame(() => {
         let nextX = x.get() + vx.current;
         let nextY = y.get() + vy.current;
 
@@ -54,8 +57,8 @@ const FloatingBubble = () => {
     return (
         <motion.div
             style={{
-                x: useTransform(x, (v) => `${v}vw`),
-                y: useTransform(y, (v) => `${v}vh`),
+                x: transformX,
+                y: transformY,
                 width: size.current,
                 height: size.current,
             }}
@@ -247,6 +250,11 @@ const KineticBubbleCard = ({
 
 export const Odyssey = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
+    const [bubblesMounted, setBubblesMounted] = useState(false);
+
+    useEffect(() => {
+        setBubblesMounted(true);
+    }, []);
 
     const { scrollYProgress } = useScroll({
         target: sectionRef,
@@ -262,7 +270,7 @@ export const Odyssey = () => {
         >
             {/* BACKGROUND BUBBLES SCREENSAVER */}
             <div className="absolute inset-0 z-0 pointer-events-none">
-                {Array.from({ length: 8 }).map((_, i) => (
+                {bubblesMounted && Array.from({ length: 8 }).map((_, i) => (
                     <FloatingBubble key={i} />
                 ))}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(166,139,92,0.04)_0%,transparent_70%)]" />
